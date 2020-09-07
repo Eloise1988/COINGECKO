@@ -69,8 +69,6 @@ function GECKOPRICE(ticker,currency){
       price_gecko=parseFloat(parsedJSON[id_coin][currency]);
           
       
-    
-    Logger.log(price_gecko)
     return price_gecko;
   }
 
@@ -183,6 +181,40 @@ function GECKOCAP(ticker,currency){
       vol_gecko=parseFloat(parsedJSON[0].market_cap);
           
       return vol_gecko;
+  }
+
+  catch(err){
+    return "Refresh to load again";
+  }
+
+}
+/** GECKOPRICEBYNAME
+ * Imports CoinGecko's cryptocurrency prices into Google spreadsheets. The id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd).
+ * For example:
+ *
+ *   =GECKOPRICEBYNAME("bitcoin", "USD","$A$1")
+ *               
+ * 
+ * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
+ * @param {against fiat currency}   the fiat currency ex: usd  or eur
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the price
+ **/
+function GECKOPRICEBYNAME(id_coin,currency){
+  try{
+      
+      id_coin=id_coin.toLowerCase()
+      
+      url="https://api.coingecko.com/api/v3/simple/price?ids="+id_coin+"&vs_currencies="+currency;
+   
+      var res = UrlFetchApp.fetch(url);
+      var content = res.getContentText();
+      var parsedJSON = JSON.parse(content);
+      
+      price_gecko=parseFloat(parsedJSON[id_coin][currency]);
+      return price_gecko;
   }
 
   catch(err){
