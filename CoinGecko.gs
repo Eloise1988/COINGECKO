@@ -206,6 +206,7 @@ function GECKOPRICEBYNAME(id_coin,currency){
   try{
       
       id_coin=id_coin.toLowerCase()
+      currency=currency.toLowerCase()
       
       url="https://api.coingecko.com/api/v3/simple/price?ids="+id_coin+"&vs_currencies="+currency;
    
