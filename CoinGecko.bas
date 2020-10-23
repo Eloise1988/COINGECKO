@@ -224,6 +224,7 @@ Public Function GECKOPRICEBYNAME(name As String, currency1 As String)
  sURL = "https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
  
  currency1 = LCase(currency1)
+ name = LCase(name)
 
  
  
