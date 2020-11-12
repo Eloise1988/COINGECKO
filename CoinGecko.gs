@@ -40,14 +40,14 @@
  * @return a one-dimensional array containing the price
  **/
 
-function GECKOPRICE(ticker,currency){
+async function GECKOPRICE(ticker,currency){
   try{
     
     
       url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
       ticker=ticker.toUpperCase()
       currency=currency.toLowerCase()
-      var res = UrlFetchApp.fetch(url);
+      var res = await UrlFetchApp.fetch(url);
       var content = res.getContentText();
       var parsedJSON = JSON.parse(content);
       
@@ -73,7 +73,7 @@ function GECKOPRICE(ticker,currency){
   }
 
   catch(err){
-    return "Refresh to load again";
+    return GECKOPRICE(ticker,currency);
   }
 
 }
@@ -94,14 +94,14 @@ function GECKOPRICE(ticker,currency){
  * @return a one-dimensional array containing the 24h volume
  **/
 
-function GECKOVOLUME(ticker,currency){
+async function GECKOVOLUME(ticker,currency){
   try{
     
     
       url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
       ticker=ticker.toUpperCase()
       currency=currency.toLowerCase()
-      var res = UrlFetchApp.fetch(url);
+      var res = await UrlFetchApp.fetch(url);
       var content = res.getContentText();
       var parsedJSON = JSON.parse(content);
       
@@ -129,7 +129,7 @@ function GECKOVOLUME(ticker,currency){
   }
 
   catch(err){
-    return "Refresh to load again";
+    return GECKOVOLUME(ticker,currency);
   }
 
 }
@@ -150,14 +150,14 @@ function GECKOVOLUME(ticker,currency){
  *
  * @return a one-dimensional array containing the total market cap
  **/
-function GECKOCAP(ticker,currency){
+async function GECKOCAP(ticker,currency){
   try{
     
     
       url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
       ticker=ticker.toUpperCase()
       currency=currency.toLowerCase()
-      var res = UrlFetchApp.fetch(url);
+      var res = await UrlFetchApp.fetch(url);
       var content = res.getContentText();
       var parsedJSON = JSON.parse(content);
       
@@ -184,7 +184,7 @@ function GECKOCAP(ticker,currency){
   }
 
   catch(err){
-    return "Refresh to load again";
+    return GECKOCAP(ticker,currency);
   }
 
 }
@@ -202,7 +202,7 @@ function GECKOCAP(ticker,currency){
  *
  * @return a one-dimensional array containing the price
  **/
-function GECKOPRICEBYNAME(id_coin,currency){
+async function GECKOPRICEBYNAME(id_coin,currency){
   try{
       
       id_coin=id_coin.toLowerCase()
@@ -210,16 +210,18 @@ function GECKOPRICEBYNAME(id_coin,currency){
       
       url="https://api.coingecko.com/api/v3/simple/price?ids="+id_coin+"&vs_currencies="+currency;
    
-      var res = UrlFetchApp.fetch(url);
+      var res = await UrlFetchApp.fetch(url);
       var content = res.getContentText();
       var parsedJSON = JSON.parse(content);
-      
+      Logger.log(parsedJSON)
+      Logger.log(parsedJSON[id_coin])
+      Logger.log(parsedJSON[id_coin][currency])
       price_gecko=parseFloat(parsedJSON[id_coin][currency]);
       return price_gecko;
   }
 
   catch(err){
-    return "Refresh to load again";
+    return GECKOPRICEBYNAME(id_coin,currency);
   }
 
 }
