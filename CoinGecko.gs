@@ -121,7 +121,7 @@ async function GECKOVOLUME(ticker,currency){
       var res = UrlFetchApp.fetch(url);
       var content = res.getContentText();
       var parsedJSON = JSON.parse(content);
-      //Logger.log(parsedJSON[id_coin][currency])
+     
       
       vol_gecko=parseFloat(parsedJSON[0].total_volume);
           
@@ -213,9 +213,7 @@ async function GECKOPRICEBYNAME(id_coin,currency){
       var res = await UrlFetchApp.fetch(url);
       var content = res.getContentText();
       var parsedJSON = JSON.parse(content);
-      Logger.log(parsedJSON)
-      Logger.log(parsedJSON[id_coin])
-      Logger.log(parsedJSON[id_coin][currency])
+      
       price_gecko=parseFloat(parsedJSON[id_coin][currency]);
       return price_gecko;
   }
@@ -225,3 +223,79 @@ async function GECKOPRICEBYNAME(id_coin,currency){
   }
 
 }
+/** GECKOCAPBYNAME
+ * Imports CoinGecko's cryptocurrency market capitalization into Google spreadsheets. The id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd).
+ * For example:
+ *
+ *   =GECKOCAPBYNAME("bitcoin", "USD","$A$1")
+ *               
+ * 
+ * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
+ * @param {against fiat currency}   the fiat currency ex: usd  or eur
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the marketcap
+ **/
+async function GECKOCAPBYNAME(id_coin,currency){
+  try{
+      
+      id_coin=id_coin.toLowerCase()
+      currency=currency.toLowerCase()
+      
+      url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
+   
+      var res = await UrlFetchApp.fetch(url);
+      var content = res.getContentText();
+      var parsedJSON = JSON.parse(content);
+      vol_gecko=parseFloat(parsedJSON[0].market_cap);
+      
+      return vol_gecko;
+  }
+
+  catch(err){
+    return GECKOCAPBYNAME(id_coin,currency);
+  }
+
+}
+/** GECKOVOLUMEBYNAME
+ * Imports CoinGecko's cryptocurrency 24H Volume into Google spreadsheets. The id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd).
+ * For example:
+ *
+ *   =GECKOVOLUMEBYNAME("bitcoin", "USD","$A$1")
+ *               
+ * 
+ * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
+ * @param {against fiat currency}   the fiat currency ex: usd  or eur
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the 24h volume
+ **/
+async function GECKOVOLUMEBYNAME(id_coin,currency){
+  try{
+      
+      id_coin=id_coin.toLowerCase()
+      currency=currency.toLowerCase()
+      
+      url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
+   
+      var res = await UrlFetchApp.fetch(url);
+      var content = res.getContentText();
+      var parsedJSON = JSON.parse(content);
+      vol_gecko=parseFloat(parsedJSON[0].total_volume);
+      
+      return vol_gecko;
+  }
+
+  catch(err){
+    return GECKOVOLUMEBYNAME(id_coin,currency);
+  }
+
+}
+      
+      
+
+      
+          
+  
