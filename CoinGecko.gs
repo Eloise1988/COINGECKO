@@ -326,7 +326,7 @@ async function GECKOCHANGE(ticker,type, nb_days){
            break;
          }
          }
-      id_coin=id_coin.toLowerCase()
+      
       type=type.toLowerCase()
       nb_days=nb_days.toString()
       
@@ -351,7 +351,7 @@ async function GECKOCHANGE(ticker,type, nb_days){
   }
 
   catch(err){
-    return GECKOCHANGE(id_coin,type,nb_days);
+    return GECKOCHANGE(ticker,type,nb_days);
   }
 
 }      
