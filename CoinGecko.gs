@@ -294,8 +294,64 @@ async function GECKOVOLUMEBYNAME(id_coin,currency){
 
 }
       
+/** GECKOCHANGE
+ * Imports CoinGecko's cryptocurrency price change, volume change and market cap change into Google spreadsheets. 
+ * For example:
+ *
+ *   =GECKOCHANGE("BTC","price", 7)
+ *   =GECKOCHANGE("ETH","volume", 1)
+ *   =GECKOCHANGE("YFI","marketcap",365)
+ *               
+ * 
+ * @param {ticker}                 the number of days you are looking for the price change, 365days=1year price change 
+ * @param {price,volume, or marketcap}                 the number of days you are looking for the price change, 365days=1year price change 
+ * @param {nb_days}                 the cryptocurrency ticker 
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the 7D%  price change on BTC (week price % change).
+ **/
+async function GECKOCHANGE(ticker,type, nb_days){
+  try{
+      url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
+      ticker=ticker.toUpperCase()
+      var res = await UrlFetchApp.fetch(url);
+      var content = res.getContentText();
+      var parsedJSON = JSON.parse(content);
+      
+      for (var i=0;i<parsedJSON.coins.length;i++) {
+        if (parsedJSON.coins[i].symbol==ticker)
+         {
+           id_coin=parsedJSON.coins[i].id.toString();
+           break;
+         }
+         }
+      id_coin=id_coin.toLowerCase()
+      type=type.toLowerCase()
+      nb_days=nb_days.toString()
+      
+      
+      url="https://api.coingecko.com/api/v3/coins/"+id_coin+"/market_chart?vs_currency=usd&days="+nb_days;
+   
+      var res = await UrlFetchApp.fetch(url);
+      var content = res.getContentText();
+      var parsedJSON = JSON.parse(content);
+      
+     if (type=="price")
+         { vol_gecko=parsedJSON.prices[parsedJSON.prices.length-1][1]/parsedJSON.prices[0][1]-1;}
+     else if (type=="volume")
+         { vol_gecko=parsedJSON.total_volumes[parsedJSON.total_volumes.length-1][1]/parsedJSON.total_volumes[0][1]-1;}
+     else if (type=="marketcap")
+         { vol_gecko=parsedJSON.market_caps[parsedJSON.market_caps.length-1][1]/parsedJSON.market_caps[0][1]-1;}
+    else 
+         { vol_gecko="Wrong parameter, either price, volume or marketcap";}
       
 
-      
-          
-  
+      return vol_gecko;
+  }
+
+  catch(err){
+    return GECKOCHANGE(id_coin,type,nb_days);
+  }
+
+}      
