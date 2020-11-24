@@ -2,6 +2,7 @@
 CoinGecko Real Time Spreadsheet Feed: Prices, Volumes, Market Cap
 
 
+
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
 
@@ -66,5 +67,6 @@ CoinGecko Real Time Spreadsheet Feed: Prices, Volumes, Market Cap
 
 
 ######
-
+## GOOGLE SHEET EXAMPLE
+![alt text](https://docs.google.com/spreadsheets/d/1QODede4loYFnd9ig_f4vRiO4J4uptxn8zIx3qRsLDeA/edit?usp=sharing)
 
