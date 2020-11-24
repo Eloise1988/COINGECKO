@@ -68,5 +68,5 @@ CoinGecko Real Time Spreadsheet Feed: Prices, Volumes, Market Cap
 
 ######
 ## GOOGLE SHEET EXAMPLE
-![alt text](https://docs.google.com/spreadsheets/d/1QODede4loYFnd9ig_f4vRiO4J4uptxn8zIx3qRsLDeA/edit?usp=sharing)
+[Link to Google Sheets!](https://docs.google.com/spreadsheets/d/1QODede4loYFnd9ig_f4vRiO4J4uptxn8zIx3qRsLDeA/edit?usp=sharing)
 
