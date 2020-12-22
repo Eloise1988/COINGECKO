@@ -43,6 +43,15 @@ CoinGecko Real Time Spreadsheet Feed: Prices, Volumes, Market Cap
 ###### =GECKOPRICEBYNAME(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOPRICEBYNAME("bitcoinV", "USD","$A$1")
 
+######
+
+## GECKOATH
+### Imports CoinGecko's cryptocurrency All Time High Price into Google spreadsheets. 
+
+![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOATH.gif)
+
+###### =GECKOATH(ticker,currency, refresh_cell) 
+##### EXAMPLE    =GECKOATH("BTC", "USD","$A$1")
 
 ######
 ######
