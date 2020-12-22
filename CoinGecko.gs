@@ -354,4 +354,58 @@ async function GECKOCHANGE(ticker,type, nb_days){
     return GECKOCHANGE(ticker,type,nb_days);
   }
 
-}      
+}  
+ /** GECKOATH
+ * Imports CoinGecko's cryptocurrency All Time High Price into Google spreadsheets. The price feed is a ONE-dimensional array.
+ * By default, data gets transformed into a number so it looks more like a normal price data import. 
+ * For example:
+ *
+ *   =GECKOATH("BTC", "USD","$A$1")
+ *               
+ * 
+ * @param {cryptocurrency}          the cryptocurrency ticker you want the price from
+ * @param {against fiat currency}   the fiat currency ex: usd  or eur
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the ATH price
+ **/
+
+async function GECKOATH(ticker,currency){
+  try{
+    
+    
+      url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
+      ticker=ticker.toUpperCase()
+      currency=currency.toLowerCase()
+      var res = await UrlFetchApp.fetch(url);
+      var content = res.getContentText();
+      var parsedJSON = JSON.parse(content);
+      
+      for (var i=0;i<parsedJSON.coins.length;i++) {
+        if (parsedJSON.coins[i].symbol==ticker)
+         {
+           id_coin=parsedJSON.coins[i].id.toString();
+           break;
+         }
+         }
+      
+      
+      url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
+   
+      var res = UrlFetchApp.fetch(url);
+      var content = res.getContentText();
+      var parsedJSON = JSON.parse(content);
+      
+      ath_gecko=parseFloat(parsedJSON[0].ath);
+          
+      
+    return ath_gecko;
+  }
+
+  catch(err){
+    return GECKOATH(ticker,currency);
+  }
+
+}
+   
