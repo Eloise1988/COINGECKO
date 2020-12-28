@@ -298,23 +298,25 @@ async function GECKOVOLUMEBYNAME(id_coin,currency){
  * Imports CoinGecko's cryptocurrency price change, volume change and market cap change into Google spreadsheets. 
  * For example:
  *
- *   =GECKOCHANGE("BTC","price", 7)
- *   =GECKOCHANGE("ETH","volume", 1)
- *   =GECKOCHANGE("YFI","marketcap",365)
+ *   =GECKOCHANGE("BTC","LTC","price", 7)
+ *   =GECKOCHANGE("ETH","USD","volume", 1)
+ *   =GECKOCHANGE("YFI","EUR","marketcap",365)
  *               
  * 
- * @param {ticker}                 the number of days you are looking for the price change, 365days=1year price change 
- * @param {price,volume, or marketcap}                 the number of days you are looking for the price change, 365days=1year price change 
- * @param {nb_days}                 the cryptocurrency ticker 
+ * @param {ticker}                 the cryptocurrency ticker 
+ * @param {ticker2}                the cryptocurrency ticker against which you want the %chage
+ * @param {price,volume, or marketcap}     the type of change you are looking for
+ * @param {nb_days}                 the number of days you are looking for the price change, 365days=1year price change 
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return a one-dimensional array containing the 7D%  price change on BTC (week price % change).
  **/
-async function GECKOCHANGE(ticker,type, nb_days){
+async function GECKOCHANGE(ticker,ticker2,type, nb_days){
   try{
       url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
       ticker=ticker.toUpperCase()
+      ticker2=ticker2.toLowerCase()
       var res = await UrlFetchApp.fetch(url);
       var content = res.getContentText();
       var parsedJSON = JSON.parse(content);
@@ -327,11 +329,13 @@ async function GECKOCHANGE(ticker,type, nb_days){
          }
          }
       
+    
+      
       type=type.toLowerCase()
       nb_days=nb_days.toString()
       
       
-      url="https://api.coingecko.com/api/v3/coins/"+id_coin+"/market_chart?vs_currency=usd&days="+nb_days;
+      url="https://api.coingecko.com/api/v3/coins/"+id_coin+"/market_chart?vs_currency="+ticker2+"&days="+nb_days;
    
       var res = await UrlFetchApp.fetch(url);
       var content = res.getContentText();
@@ -351,7 +355,7 @@ async function GECKOCHANGE(ticker,type, nb_days){
   }
 
   catch(err){
-    return GECKOCHANGE(ticker,type,nb_days);
+    return GECKOCHANGE(ticker,ticker2,type, nb_days);
   }
 
 }  
@@ -408,4 +412,5 @@ async function GECKOATH(ticker,currency){
   }
 
 }
+
    
