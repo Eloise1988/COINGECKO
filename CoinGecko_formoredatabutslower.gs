@@ -10,9 +10,14 @@
   ------------------------------------------------------------------------------------------------------------------------------------
   A library for importing CoinGecko's price, volume & market cap feeds into Google spreadsheets. Functions include:
 
-     GECKOPRICE            For use by end users to real-time cryptocurrency prices 
-     GECKOVOLUME           For use by end users to real-time cryptocurrency 24h volumes
-     GECKOCAP              For use by end users to real-time cryptocurrency total market caps
+     GECKOPRICE            For use by end users to cryptocurrency prices 
+     GECKOVOLUME           For use by end users to cryptocurrency 24h volumes
+     GECKOCAP              For use by end users to cryptocurrency total market caps
+     GECKOPRICEBYNAME      For use by end users to cryptocurrency prices using id name
+     GECKOVOLBYNAME        For use by end users to cryptocurrency volumes using id name
+     GECKOCAPBYNAME        For use by end users to cryptocurrency total market caps using id name
+     GECKOCHANGE           For use by end users to cryptocurrency % change price, volume, mkt
+     GECKOATH              For use by end users to cryptocurrency All Time High Prices
 
   
   For bug reports see https://github.com/Eloise1988/COINGECKO/issues
@@ -41,41 +46,49 @@
  **/
 
 async function GECKOPRICE(ticker,currency){
+
+
+  ticker=ticker.toUpperCase()
+  currency=currency.toLowerCase()
+  id_cache=ticker+currency+'price'
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
+  
   try{
     
+    url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
     
-      url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
-      ticker=ticker.toUpperCase()
-      currency=currency.toLowerCase()
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-      for (var i=0;i<parsedJSON.coins.length;i++) {
-        if (parsedJSON.coins[i].symbol==ticker)
-         {
-           id_coin=parsedJSON.coins[i].id.toString();
-           break;
-         }
-         }
-      
-      
-      url="https://api.coingecko.com/api/v3/simple/price?ids="+id_coin+"&vs_currencies="+currency;
-   
-      var res = UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-      price_gecko=parseFloat(parsedJSON[id_coin][currency]);
-          
-      
-    return price_gecko;
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
+      if (parsedJSON.coins[i].symbol==ticker)
+      {
+        id_coin=parsedJSON.coins[i].id.toString();
+        break;
+      }
+    }
+    
+    url="https://api.coingecko.com/api/v3/simple/price?ids="+id_coin+"&vs_currencies="+currency;
+    
+    var res = UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    price_gecko=parseFloat(parsedJSON[id_coin][currency]);
+    cache.put(id_cache, Number(price_gecko));
+    
+    return Number(price_gecko);
   }
-
+  
   catch(err){
-    return "Error/Reload";
+    return "Error";
   }
-
+  
 }
 
 /** GECKOVOLUME
@@ -95,41 +108,50 @@ async function GECKOPRICE(ticker,currency){
  **/
 
 async function GECKOVOLUME(ticker,currency){
+  
+  ticker=ticker.toUpperCase()
+  currency=currency.toLowerCase()
+  id_cache=ticker+currency+'volume'
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
+  
   try{
     
+    url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
     
-      url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
-      ticker=ticker.toUpperCase()
-      currency=currency.toLowerCase()
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
       
-      for (var i=0;i<parsedJSON.coins.length;i++) {
-        
-        if (parsedJSON.coins[i].symbol==ticker)
-         {
-           id_coin=parsedJSON.coins[i].id.toString();
-           break;
-         }
-         }
-      
-      
-      
-      url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
-      
-      var res = UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-     
-      
-      vol_gecko=parseFloat(parsedJSON[0].total_volume);
-          
-      return vol_gecko;
+      if (parsedJSON.coins[i].symbol==ticker)
+      {
+        id_coin=parsedJSON.coins[i].id.toString();
+        break;
+      }
+    }
+    
+    url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
+    
+    var res = UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    
+    vol_gecko=parseFloat(parsedJSON[0].total_volume);
+    cache.put(id_cache, Number(vol_gecko));
+    
+    return Number(vol_gecko);
   }
-
+  
   catch(err){
-    return "Error/Reload";
+    return 'Error';
   }
 
 }
@@ -151,40 +173,47 @@ async function GECKOVOLUME(ticker,currency){
  * @return a one-dimensional array containing the total market cap
  **/
 async function GECKOCAP(ticker,currency){
+
+  ticker=ticker.toUpperCase()
+  currency=currency.toLowerCase()
+  id_cache=ticker+currency+'mkt'
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
   try{
     
+    url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
     
-      url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
-      ticker=ticker.toUpperCase()
-      currency=currency.toLowerCase()
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-      for (var i=0;i<parsedJSON.coins.length;i++) {
-        
-        if (parsedJSON.coins[i].symbol==ticker)
-         {
-           id_coin=parsedJSON.coins[i].id.toString();
-           break;
-         }
-         }
-      
-      
-      
-      url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
-      
-      var res = UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-      vol_gecko=parseFloat(parsedJSON[0].market_cap);
-          
-      return vol_gecko;
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
+      if (parsedJSON.coins[i].symbol==ticker)
+      {
+        id_coin=parsedJSON.coins[i].id.toString();
+        break;
+      }
+    }
+    
+    url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
+    
+    var res = UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    mkt_gecko=parseFloat(parsedJSON[0].market_cap);
+    cache.put(id_cache, Number(mkt_gecko));
+    
+    return Number(mkt_gecko);
   }
-
+  
   catch(err){
-    return GECKOCAP(ticker,currency);
+    return 'Error';
   }
 
 }
@@ -203,23 +232,33 @@ async function GECKOCAP(ticker,currency){
  * @return a one-dimensional array containing the price
  **/
 async function GECKOPRICEBYNAME(id_coin,currency){
-  try{
-      
-      id_coin=id_coin.toLowerCase()
-      currency=currency.toLowerCase()
-      
-      url="https://api.coingecko.com/api/v3/simple/price?ids="+id_coin+"&vs_currencies="+currency;
-   
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-      price_gecko=parseFloat(parsedJSON[id_coin][currency]);
-      return price_gecko;
+  
+  id_coin=id_coin.toLowerCase()
+  currency=currency.toLowerCase()
+  id_cache=id_coin+currency+'pricebyname'
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
   }
-
+  try{
+    
+    url="https://api.coingecko.com/api/v3/simple/price?ids="+id_coin+"&vs_currencies="+currency;
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    price_gecko=parseFloat(parsedJSON[id_coin][currency]);
+    cache.put(id_cache, Number(price_gecko));
+    
+    return Number(price_gecko);
+  }
+  
   catch(err){
-    return "Error/Reload";
+    return 'Error';
   }
 
 }
@@ -238,23 +277,31 @@ async function GECKOPRICEBYNAME(id_coin,currency){
  * @return a one-dimensional array containing the marketcap
  **/
 async function GECKOCAPBYNAME(id_coin,currency){
-  try{
-      
-      id_coin=id_coin.toLowerCase()
-      currency=currency.toLowerCase()
-      
-      url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
-   
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      vol_gecko=parseFloat(parsedJSON[0].market_cap);
-      
-      return vol_gecko;
+  id_coin=id_coin.toLowerCase()
+  currency=currency.toLowerCase()
+  id_cache=id_coin+currency+'capbyname'
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
   }
-
+  try{
+    
+    url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    cap_gecko=parseFloat(parsedJSON[0].market_cap);
+    cache.put(id_cache, Number(cap_gecko));
+    
+    return Number(cap_gecko);
+  }
+  
   catch(err){
-    return "Error/Reload";
+    return 'Error';
   }
 
 }
@@ -273,23 +320,34 @@ async function GECKOCAPBYNAME(id_coin,currency){
  * @return a one-dimensional array containing the 24h volume
  **/
 async function GECKOVOLUMEBYNAME(id_coin,currency){
+  
+  id_coin=id_coin.toLowerCase()
+  currency=currency.toLowerCase()
+  id_cache=id_coin+currency+'volbyname'
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  } 
+ 
+    
   try{
-      
-      id_coin=id_coin.toLowerCase()
-      currency=currency.toLowerCase()
-      
-      url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
-   
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      vol_gecko=parseFloat(parsedJSON[0].total_volume);
-      
-      return vol_gecko;
+    
+    url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    vol_gecko=parseFloat(parsedJSON[0].total_volume);
+    cache.put(id_cache, Number(vol_gecko));
+    
+    return Number(vol_gecko);
   }
-
+  
   catch(err){
-    return "Error/Reload";
+    return 'Error';
   }
 
 }
@@ -298,60 +356,71 @@ async function GECKOVOLUMEBYNAME(id_coin,currency){
  * Imports CoinGecko's cryptocurrency price change, volume change and market cap change into Google spreadsheets. 
  * For example:
  *
- *   =GECKOCHANGE("BTC","price", 7)
- *   =GECKOCHANGE("ETH","volume", 1)
- *   =GECKOCHANGE("YFI","marketcap",365)
+ *   =GECKOCHANGE("BTC","LTC","price", 7)
+ *   =GECKOCHANGE("ETH","USD","volume", 1)
+ *   =GECKOCHANGE("YFI","EUR","marketcap",365)
  *               
  * 
- * @param {ticker}                 the number of days you are looking for the price change, 365days=1year price change 
- * @param {price,volume, or marketcap}                 the number of days you are looking for the price change, 365days=1year price change 
- * @param {nb_days}                 the cryptocurrency ticker 
+ * @param {ticker}                 the cryptocurrency ticker 
+ * @param {ticker2}                the cryptocurrency ticker against which you want the %chage
+ * @param {price,volume, or marketcap}     the type of change you are looking for
+ * @param {nb_days}                 the number of days you are looking for the price change, 365days=1year price change 
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return a one-dimensional array containing the 7D%  price change on BTC (week price % change).
  **/
-async function GECKOCHANGE(ticker,type, nb_days){
-  try{
-      url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
-      ticker=ticker.toUpperCase()
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-      for (var i=0;i<parsedJSON.coins.length;i++) {
-        if (parsedJSON.coins[i].symbol==ticker)
-         {
-           id_coin=parsedJSON.coins[i].id.toString();
-           break;
-         }
-         }
-      
-      type=type.toLowerCase()
-      nb_days=nb_days.toString()
-      
-      
-      url="https://api.coingecko.com/api/v3/coins/"+id_coin+"/market_chart?vs_currency=usd&days="+nb_days;
-   
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-     if (type=="price")
-         { vol_gecko=parsedJSON.prices[parsedJSON.prices.length-1][1]/parsedJSON.prices[0][1]-1;}
-     else if (type=="volume")
-         { vol_gecko=parsedJSON.total_volumes[parsedJSON.total_volumes.length-1][1]/parsedJSON.total_volumes[0][1]-1;}
-     else if (type=="marketcap")
-         { vol_gecko=parsedJSON.market_caps[parsedJSON.market_caps.length-1][1]/parsedJSON.market_caps[0][1]-1;}
-    else 
-         { vol_gecko="Wrong parameter, either price, volume or marketcap";}
-      
-
-      return vol_gecko;
+async function GECKOCHANGE(ticker,ticker2,type, nb_days){
+  
+  ticker=ticker.toUpperCase()
+  ticker2=ticker2.toLowerCase()
+  type=type.toLowerCase()
+  nb_days=nb_days.toString()
+  id_cache=ticker+ticker2+type+nb_days+'change'
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
   }
-
+  try{
+    url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
+      if (parsedJSON.coins[i].symbol==ticker)
+      {
+        id_coin=parsedJSON.coins[i].id.toString();
+        break;
+      }
+    }
+    
+    url="https://api.coingecko.com/api/v3/coins/"+id_coin+"/market_chart?vs_currency="+ticker2+"&days="+nb_days;
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    if (type=="price")
+    { vol_gecko=parseFloat(parsedJSON.prices[parsedJSON.prices.length-1][1]/parsedJSON.prices[0][1]-1).toFixed(4);}
+    else if (type=="volume")
+    { vol_gecko=parseFloat(parsedJSON.total_volumes[parsedJSON.total_volumes.length-1][1]/parsedJSON.total_volumes[0][1]-1).toFixed(4);}
+    else if (type=="marketcap")
+    { vol_gecko=parseFloat(parsedJSON.market_caps[parsedJSON.market_caps.length-1][1]/parsedJSON.market_caps[0][1]-1).toFixed(4);}
+    else 
+    { vol_gecko="Wrong parameter, either price, volume or marketcap";}
+    
+    if (type!="Wrong parameter, either price, volume or marketcap")
+      cache.put(id_cache, Number(vol_gecko));
+    return Number(vol_gecko);
+  }
+  
   catch(err){
-    return "Error/Reload";
+    return 'Error';
   }
 
 }  
@@ -372,40 +441,47 @@ async function GECKOCHANGE(ticker,type, nb_days){
  **/
 
 async function GECKOATH(ticker,currency){
+  ticker=ticker.toUpperCase()
+  currency=currency.toLowerCase()
+  id_cache=ticker+currency+"ath"
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
+  
   try{
     
+    url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
     
-      url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
-      ticker=ticker.toUpperCase()
-      currency=currency.toLowerCase()
-      var res = await UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-      for (var i=0;i<parsedJSON.coins.length;i++) {
-        if (parsedJSON.coins[i].symbol==ticker)
-         {
-           id_coin=parsedJSON.coins[i].id.toString();
-           break;
-         }
-         }
-      
-      
-      url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
-   
-      var res = UrlFetchApp.fetch(url);
-      var content = res.getContentText();
-      var parsedJSON = JSON.parse(content);
-      
-      ath_gecko=parseFloat(parsedJSON[0].ath);
-          
-      
-    return ath_gecko;
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
+      if (parsedJSON.coins[i].symbol==ticker)
+      {
+        id_coin=parsedJSON.coins[i].id.toString();
+        break;
+      }
+    }
+    
+    
+    url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
+    
+    var res = UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    ath_gecko=parseFloat(parsedJSON[0].ath);
+    cache.put(id_cache, Number(ath_gecko));
+    
+    
+    return Number(ath_gecko);
   }
-
+  
   catch(err){
-    return "Error/Reload";
+    return 'Error';
   }
 
 }
-   
