@@ -4,7 +4,7 @@
 '  ====================================================================================================================================
 '  Version:      1.0
 '  Project Page: https://github.com/Eloise1988/COINGECKO
-'  Copyright:    (c) 2020 by Eloise1988
+'  Copyright:    (c) 2021 by Eloise1988
 '
 '  License:      GNU General Public License, version 3 (GPL-3.0)
 '                http://www.opensource.org/licenses/gpl-3.0.html
