@@ -414,13 +414,13 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
     else 
     { vol_gecko="Wrong parameter, either price, volume or marketcap";}
     
-    if (type!="Wrong parameter, either price, volume or marketcap")
+    if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
       cache.put(id_cache, Number(vol_gecko));
     return Number(vol_gecko);
   }
   
   catch(err){
-    return GECKOCHANGE(ticker,ticker2,type, nb_days);
+    return "";
   }
 
 }  
