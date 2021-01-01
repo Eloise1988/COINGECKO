@@ -4,7 +4,7 @@
 '  ====================================================================================================================================
 '  Version:      1.0
 '  Project Page: https://github.com/Eloise1988/COINGECKO
-'  Copyright:    (c) 2021 by Eloise1988
+'  Copyright:    (c) 2020 by Eloise1988
 '
 '  License:      GNU General Public License, version 3 (GPL-3.0)
 '                http://www.opensource.org/licenses/gpl-3.0.html
@@ -53,12 +53,16 @@
 
 
 Public Function GECKOPRICE(ticker As String, currency1 As String)
-
+ Application.Calculation = xlCalculationManual
+ Application.ScreenUpdating = False
+ Application.StatusBar = "Loadind data. Please Wait..."
+ 
  Dim httpObject As Object
  Dim sGetResult As String
  Set httpObject = CreateObject("Microsoft.XMLHTTP")
  Dim i, lenght_array As Integer
  Dim jsnstr() As String
+ 
  
  
  
@@ -92,7 +96,8 @@ sGetResult = httpObject.responseText
 Price = Split(Split(sGetResult, ":")(2), "}}")
 
 GECKOPRICE = CDbl(Price(0))
- 
+Application.Calculation = xlCalculationAutomatic
+Application.ScreenUpdating = True
 
 End Function
 
@@ -113,7 +118,7 @@ End Function
 ' **
 
 Public Function GECKOVOLUME(ticker As String, currency1 As String)
-
+ Application.Calculation = xlCalculationManual
  Dim httpObject As Object
  Dim sGetResult As String
  Set httpObject = CreateObject("Microsoft.XMLHTTP")
@@ -152,7 +157,7 @@ sGetResult = httpObject.responseText
 volume = Split(Split(sGetResult, """total_volume"":")(1), ",")
 
 GECKOVOLUME = CDbl(volume(0))
-     
+Application.Calculation = xlCalculationAutomatic
 End Function
 
 
@@ -175,13 +180,13 @@ End Function
 
 
  Public Function GECKOCAP(ticker As String, currency1 As String)
-
+ Application.Calculation = xlCalculationManual
  Dim httpObject As Object
  Dim sGetResult As String
  Set httpObject = CreateObject("Microsoft.XMLHTTP")
  Dim i, lenght_array As Integer
  Dim jsnstr() As String
- 
+
  
  
  sUrl = "https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
@@ -214,7 +219,8 @@ sGetResult = httpObject.responseText
 mkt = Split(Split(sGetResult, """market_cap"":")(1), ",")
 
 GECKOCAP = CDbl(mkt(0))
-      
+Application.Calculation = xlCalculationAutomatic
+
 End Function
 
 ' GECKOPRICEBYNAME
@@ -233,13 +239,12 @@ End Function
 ' * @return a one-dimensional array containing the price
 '
 Public Function GECKOPRICEBYNAME(name As String, currency1 As String)
-
+ Application.Calculation = xlCalculationManual
  Dim httpObject As Object
  Dim sGetResult As String
  Set httpObject = CreateObject("Microsoft.XMLHTTP")
  Dim i, lenght_array As Integer
  Dim jsnstr() As String
- 
  
  
  sUrl = "https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
@@ -258,7 +263,7 @@ sGetResult = httpObject.responseText
 Price = Split(Split(sGetResult, ":")(2), "}}")
 
 GECKOPRICEBYNAME = CDbl(Price(0))
- 
+Application.Calculation = xlCalculationAutomatic
 
 End Function
 '/** GECKOCHANGE
@@ -281,12 +286,14 @@ End Function
 ' **/
 Public Function GECKOCHANGE(ticker As String, ticker2 As String, type1 As String, nb_days As Integer)
 
-
+ Application.Calculation = xlCalculationManual
  Dim httpObject As Object
  Dim sGetResult As String, sGetResult2 As String
  Set httpObject = CreateObject("Microsoft.XMLHTTP")
  Dim i, lenght_array As Integer
  Dim jsnstr() As String, data As String
+ 
+ 
  
  sUrl = "https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
  ticker = UCase(ticker)
@@ -338,7 +345,7 @@ End If
 
 
 GECKOCHANGE = CDbl(Data1)
-      
+Application.Calculation = xlCalculationAutomatic
       
 
 End Function
@@ -362,7 +369,7 @@ End Function
 
 
 Public Function GECKOATH(ticker As String, currency1 As String)
-
+ Application.Calculation = xlCalculationManual
  Dim httpObject As Object
  Dim sGetResult As String
  Set httpObject = CreateObject("Microsoft.XMLHTTP")
@@ -401,6 +408,7 @@ sGetResult = httpObject.responseText
 ATH = Split(Split(sGetResult, """ath"":")(1), ",")
 
 GECKOATH = CDbl(ATH(0))
- 
+Application.Calculation = xlCalculationAutomatic
 
 End Function
+
