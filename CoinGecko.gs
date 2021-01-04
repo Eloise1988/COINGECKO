@@ -485,3 +485,77 @@ async function GECKOATH(ticker,currency){
   }
 
 }
+/** GECKOHIST
+ * Imports CoinGecko's cryptocurrency price change, volume change and market cap change into Google spreadsheets. 
+ * For example:
+ *
+ *   =GECKOHIST("BTC","LTC","price", "31-12-2020")
+ *   =GECKOHIST("ETH","USD","volume", "01-01-2021")
+ *   =GECKOHIST("YFI","EUR","marketcap","06-06-2020")
+ *               
+ * 
+ * @param {ticker}                 the cryptocurrency ticker 
+ * @param {ticker2}                the cryptocurrency ticker against which you want the %chage
+ * @param {price,volume, or marketcap}     the type of change you are looking for
+ * @param {date_ddmmyyy}           the date format dd-mm-yyy get open of the specified date, for close dd-mm-yyy+ 1day
+ * @param {parseOptions}           an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the historical open price of BTC -LTC on the 31-12-2020
+ **/
+async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy){
+  
+  ticker=ticker.toUpperCase()
+  ticker2=ticker2.toLowerCase()
+  type=type.toLowerCase()
+  date_ddmmyyy=date_ddmmyyy.toString()
+  id_cache=ticker+ticker2+type+date_ddmmyyy+'hist'
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
+  try{
+    url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
+      if (parsedJSON.coins[i].symbol==ticker)
+      {
+        id_coin=parsedJSON.coins[i].id.toString();
+        break;
+      }
+    }
+    
+    url="https://api.coingecko.com/api/v3/coins/"+id_coin+"/history?date="+date_ddmmyyy+"&localization=false";
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    
+    if (type=="price"){
+      vol_gecko=parseFloat(parsedJSON.market_data.current_price[ticker2]).toFixed(4);}
+    else if (type=="volume")
+    { vol_gecko=parseFloat(parsedJSON.market_data.total_volume[ticker2]).toFixed(4);}
+    else if (type=="marketcap")
+    { vol_gecko=parseFloat(parsedJSON.market_data.market_cap[ticker2]).toFixed(4);}
+    else 
+    { vol_gecko="Wrong parameter, either price, volume or marketcap";}
+    
+    if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
+      cache.put(id_cache, Number(vol_gecko));
+    return Number(vol_gecko);
+  }
+  
+  catch(err){
+    return "";
+  }
+
+}  
+
