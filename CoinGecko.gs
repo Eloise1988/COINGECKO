@@ -558,4 +558,62 @@ async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy){
   }
 
 }  
+/** GECKOCHANGEBYNAME
+ * Imports CoinGecko's cryptocurrency price change, volume change and market cap change into Google spreadsheets. 
+ * For example:
+ *
+ *   =GECKOCHANGE("bitcoin","LTC","price", 7)
+ *   =GECKOCHANGE("Ehereum","USD","volume", 1)
+ *   =GECKOCHANGE("litecoin","EUR","marketcap",365)
+ *               
+ * 
+ * @param {ticker}                 the cryptocurrency ticker 
+ * @param {ticker2}                the cryptocurrency ticker/currency against which you want the %change
+ * @param {price,volume, or marketcap}     the type of change you are looking for
+ * @param {nb_days}                 the number of days you are looking for the price change, 365days=1year price change 
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the 7D%  price change on BTC (week price % change).
+ **/
+async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
+  
+  id_coin=id_coin.toLowerCase()
+  ticker2=ticker2.toLowerCase()
+  type=type.toLowerCase()
+  nb_days=nb_days.toString()
+  id_cache=id_coin+ticker2+type+nb_days+'changebyname'
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
+  try{
+    
+    url="https://api.coingecko.com/api/v3/coins/"+id_coin+"/market_chart?vs_currency="+ticker2+"&days="+nb_days;
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    if (type=="price")
+    { vol_gecko=parseFloat(parsedJSON.prices[parsedJSON.prices.length-1][1]/parsedJSON.prices[0][1]-1).toFixed(4);}
+    else if (type=="volume")
+    { vol_gecko=parseFloat(parsedJSON.total_volumes[parsedJSON.total_volumes.length-1][1]/parsedJSON.total_volumes[0][1]-1).toFixed(4);}
+    else if (type=="marketcap")
+    { vol_gecko=parseFloat(parsedJSON.market_caps[parsedJSON.market_caps.length-1][1]/parsedJSON.market_caps[0][1]-1).toFixed(4);}
+    else 
+    { vol_gecko="Wrong parameter, either price, volume or marketcap";}
+    
+    if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
+      cache.put(id_cache, Number(vol_gecko));
+    return Number(vol_gecko);
+  }
+  
+  catch(err){
+    return "";
+  }
 
+}  
