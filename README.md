@@ -1,5 +1,5 @@
 # COINGECKO
-CoinGecko Real Time Spreadsheet Feed: Prices, Volumes, Market Cap
+CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 
 
