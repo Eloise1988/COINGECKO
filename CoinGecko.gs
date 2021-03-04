@@ -34,7 +34,7 @@
  * By default, data gets transformed into a number so it looks more like a normal price data import. 
  * For example:
  *
- *   =GECKOPRICE("BTC", "USD","$A$1")
+ *   =GECKOPRICE("BTC", "USD",$A$1)
  *               
  * 
  * @param {cryptocurrency}          the cryptocurrency ticker you want the price from
@@ -96,7 +96,7 @@ async function GECKOPRICE(ticker,currency){
  * By default, data gets transformed into a number so it looks more like a normal number data import. 
  * For example:
  *
- *   =GECKOVOLUME("BTC", "USD","$A$1")
+ *   =GECKOVOLUME("BTC", "USD",$A$1)
  *               
  * 
  * @param {cryptocurrency}          the cryptocurrency ticker you want the 24h volume from
@@ -162,7 +162,7 @@ async function GECKOVOLUME(ticker,currency){
  * By default, it gets the market cap. If you need to get the fully diluted mktcap, specify the 3rd element as true. 
  * For example:
  *
- *   =GECKOCAP("BTC","USD",true,"$A$1")
+ *   =GECKOCAP("BTC","USD",true,$A$1)
  *               
  * 
  * @param {cryptocurrency}          the cryptocurrency ticker you want the total market cap from
@@ -234,7 +234,7 @@ async function GECKOCAP(ticker,currency,diluted=false){
  * Imports CoinGecko's cryptocurrency prices into Google spreadsheets. The id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd).
  * For example:
  *
- *   =GECKOPRICEBYNAME("bitcoin", "USD","$A$1")
+ *   =GECKOPRICEBYNAME("bitcoin", "USD",$A$1)
  *               
  * 
  * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
@@ -341,7 +341,7 @@ async function GECKOCAPBYNAME(id_coin,currency,diluted=false){
  * Imports CoinGecko's cryptocurrency 24H Volume into Google spreadsheets. The id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd).
  * For example:
  *
- *   =GECKOVOLUMEBYNAME("bitcoin", "USD","$A$1")
+ *   =GECKOVOLUMEBYNAME("bitcoin", "USD",$A$1)
  *               
  * 
  * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
@@ -461,7 +461,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
  * By default, data gets transformed into a number so it looks more like a normal price data import. 
  * For example:
  *
- *   =GECKOATH("BTC", "USD","$A$1")
+ *   =GECKOATH("BTC", "USD",$A$1)
  *               
  * 
  * @param {cryptocurrency}          the cryptocurrency ticker you want the price from
