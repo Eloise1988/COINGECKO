@@ -159,24 +159,29 @@ async function GECKOVOLUME(ticker,currency){
 
 /** GECKOCAP
  * Imports cryptocurrencies total market cap into Google spreadsheets. The feed is a ONE-dimensional array.
- * By default, data gets transformed into a number so it looks more like a normal number data import. 
+ * By default, it gets the market cap. If you need to get the fully diluted mktcap, specify the 3rd element as true. 
  * For example:
  *
- *   =GECKOCAP("BTC", "USD","$A$1")
+ *   =GECKOCAP("BTC","USD",true,"$A$1")
  *               
  * 
  * @param {cryptocurrency}          the cryptocurrency ticker you want the total market cap from
  * @param {against fiat currency}   the fiat currency ex: usd  or eur
+ * @param {mktcap or fully diluted mktcap}  an optional boolean to get fully diluted valuation
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
- * @return a one-dimensional array containing the total market cap
+ * @returns the fully diluted market cap of BTCUSD
  **/
-async function GECKOCAP(ticker,currency){
+async function GECKOCAP(ticker,currency,diluted=false){
 
   ticker=ticker.toUpperCase()
   currency=currency.toLowerCase()
   id_cache=ticker+currency+'mkt'
+  if (diluted==true) {
+    id_cache=ticker+currency+'mktdiluted'
+  }
+  
   
   // Gets a cache that is common to all users of the script.
   var cache = CacheService.getScriptCache();
@@ -205,15 +210,23 @@ async function GECKOCAP(ticker,currency){
     var res = UrlFetchApp.fetch(url);
     var content = res.getContentText();
     var parsedJSON = JSON.parse(content);
+    if (diluted==true) {if (parsedJSON[0].fully_diluted_valuation!= null){
+      mkt_gecko=parseFloat(parsedJSON[0].fully_diluted_valuation);
+      cache.put(id_cache, Number(mkt_gecko));}
+      
+      else {mkt_gecko=""}}
+      
+    else 
+    { mkt_gecko=parseFloat(parsedJSON[0].market_cap);
+      cache.put(id_cache, Number(mkt_gecko));}
+      
     
-    mkt_gecko=parseFloat(parsedJSON[0].market_cap);
-    cache.put(id_cache, Number(mkt_gecko));
     
-    return Number(mkt_gecko);
+    return mkt_gecko;
   }
   
   catch(err){
-    return GECKOCAP(ticker,currency);
+    return GECKOCAP(ticker,currency,diluted=false);
   }
 
 }
@@ -263,23 +276,30 @@ async function GECKOPRICEBYNAME(id_coin,currency){
 
 }
 /** GECKOCAPBYNAME
- * Imports CoinGecko's cryptocurrency market capitalization into Google spreadsheets. The id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd).
- * For example:
+ * Imports CoinGecko's cryptocurrency market capitalization into Google spreadsheets. The id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd). By default, it gets the market cap. If you need to get the fully diluted mktcap, specify the 3rd element as true.
+ * For example for normal mkt cap:
  *
- *   =GECKOCAPBYNAME("bitcoin", "USD","$A$1")
+ *   =GECKOCAPBYNAME("bitcoin", "USD")
  *               
+ * For example for fully diluted mkt cap:
+ *
+ *   =GECKOCAPBYNAME("bitcoin", "USD",true)
  * 
  * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
  * @param {against fiat currency}   the fiat currency ex: usd  or eur
+ * @param {mktcap or fully diluted mktcap}  an optional boolean to get fully diluted valuation
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return a one-dimensional array containing the marketcap
  **/
-async function GECKOCAPBYNAME(id_coin,currency){
+async function GECKOCAPBYNAME(id_coin,currency,diluted=false){
   id_coin=id_coin.toLowerCase()
   currency=currency.toLowerCase()
   id_cache=id_coin+currency+'capbyname'
+  if (diluted==true) {
+    id_cache=id_coin+currency+'capbynamediluted'
+  }
   
   // Gets a cache that is common to all users of the script.
   var cache = CacheService.getScriptCache();
@@ -291,17 +311,29 @@ async function GECKOCAPBYNAME(id_coin,currency){
     
     url="https://api.coingecko.com/api/v3/coins/markets?vs_currency="+currency+"&ids="+id_coin;
     
-    var res = await UrlFetchApp.fetch(url);
+    
+    var res = UrlFetchApp.fetch(url);
     var content = res.getContentText();
     var parsedJSON = JSON.parse(content);
-    cap_gecko=parseFloat(parsedJSON[0].market_cap);
-    cache.put(id_cache, Number(cap_gecko));
+    if (diluted==true) {if (parsedJSON[0].fully_diluted_valuation!= null){
+      mkt_gecko=parseFloat(parsedJSON[0].fully_diluted_valuation);
+      cache.put(id_cache, Number(mkt_gecko));}
+      
+      else {mkt_gecko=""}}
+      
+    else 
+    { mkt_gecko=parseFloat(parsedJSON[0].market_cap);
+      cache.put(id_cache, Number(mkt_gecko));}
+      
     
-    return Number(cap_gecko);
+    
+    return mkt_gecko;
   }
   
+  
+  
   catch(err){
-    return GECKOCAPBYNAME(id_coin,currency);
+    return GECKOCAPBYNAME(id_coin,currency,diluted=false);
   }
 
 }
@@ -617,3 +649,4 @@ async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
   }
 
 }  
+
