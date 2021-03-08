@@ -3,7 +3,7 @@
   ====================================================================================================================================
   Version:      1.0
   Project Page: https://github.com/Eloise1988/COINGECKO
-  Copyright:    (c) 2020 by Eloise1988
+  Copyright:    (c) 2021 by Eloise1988
                 
   License:      GNU General Public License, version 3 (GPL-3.0) 
                 http://www.opensource.org/licenses/gpl-3.0.html
@@ -18,6 +18,7 @@
      GECKOCAPBYNAME        For use by end users to cryptocurrency total market caps using id name
      GECKOCHANGE           For use by end users to cryptocurrency % change price, volume, mkt
      GECKOATH              For use by end users to cryptocurrency All Time High Prices
+     GECKO_ID_DATA         For use by end users to cryptocurrency data end points
 
   
   For bug reports see https://github.com/Eloise1988/COINGECKO/issues
@@ -642,6 +643,88 @@ async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
     if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
       cache.put(id_cache, Number(vol_gecko));
     return Number(vol_gecko);
+  }
+  
+  catch(err){
+    return "";
+  }
+
+}  
+
+/** GECKO_ID_DATA
+ * Imports CoinGecko's cryptocurrency data point, ath, 24h_low, market cap, price... into Google spreadsheets. 
+ * For example:
+ *
+ *   =GECKO_ID_DATA("bitcoin","ath/usd", false)
+ *   =GECKO_ID_DATA("ETH","ath_change_percentage")
+ *   =GECKO_ID_DATA("LTC","market_data/high_24h/usd",true)
+ *               
+ * 
+ * @param {ticker}                 the cryptocurrency ticker 
+ * @param {parameter}              the parameter separated by "/" ex:   "ath/usd" or "ath_change_percentage/usd" or "high_24h/usd"
+ * @param {by_ticker boolean}       an optional true (data by ticker) false (data by id_name)          
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the specified parameter.
+ **/
+async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
+  
+  if(by_ticker==true){
+    ticker=ticker.toUpperCase()
+    try{
+    
+    url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
+      if (parsedJSON.coins[i].symbol==ticker)
+      {
+        id_coin=parsedJSON.coins[i].id.toString();
+        id_cache=ticker+parameter+'gecko_id_data'
+        break;
+      }
+    }}
+    catch(err){
+    return "#error_ticker";
+  }
+  }
+  else{
+    id_coin=ticker.toLowerCase()
+    id_cache=id_coin+parameter+'gecko_id_data'
+  }
+  
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return cached;
+  }
+  try{
+    
+    let parameter_array=parameter.split('/');
+    Logger.log(parameter_array)
+
+    url="https://api.coingecko.com/api/v3/coins/"+id_coin;
+    
+
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    
+  
+    for(elements in parameter_array){
+      parsedJSON=parsedJSON[parameter_array[elements]];
+    }
+    
+    
+    cache.put(id_cache, parsedJSON);
+    return parsedJSON;
   }
   
   catch(err){
