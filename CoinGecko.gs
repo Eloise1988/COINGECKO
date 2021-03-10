@@ -92,6 +92,76 @@ async function GECKOPRICE(ticker,currency){
   
 }
 
+
+/** GECKOCOMPARE
+ * Imports two crypto tokens from CoinGecko and works out their comparative value.
+ * The feed is a ONE-dimensional array.
+ * By default, data gets transformed into a number so it looks more like a normal price data import. 
+ * For example:
+ *
+ *   =GECKOCOMPARE("BTC","ETH",$A$1)
+ *               
+ * 
+ * @param {crypto from}           the cryptocurrency ticker you want the price from
+ * @param {crypto to}             the cryptocurrency ticker you wish to compare with
+ * @param {parseOptions}          an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the price
+ **/
+
+async function GECKOCOMPARE(ticker1,ticker2){
+
+  ticker1=ticker1.toUpperCase()
+  ticker2=ticker2.toUpperCase()
+  id_coin_from=0
+  id_coin_to=0
+  id_cache=ticker1+ticker2+'price'
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
+  
+  try{
+
+    url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
+      if (parsedJSON.coins[i].symbol==ticker1) {
+        id_coin_from=parsedJSON.coins[i].id.toString();
+      } 
+      else if (parsedJSON.coins[i].symbol==ticker2) {
+        id_coin_to=parsedJSON.coins[i].id.toString();
+      }
+      else if ( id_coin_from != 0 && id_coin_to != 0 ) {
+        break
+      }
+    }
+    
+    url="https://api.coingecko.com/api/v3/simple/price?ids="+id_coin_from+"%2C"+id_coin_to+"&vs_currencies=usd";
+    
+    var res = UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    compare_gecko=parseFloat(parseFloat(parsedJSON[id_coin_from]["usd"]) / parseFloat(parsedJSON[id_coin_to]["usd"]));
+    cache.put(id_cache, Number(compare_gecko));
+    
+    return Number(compare_gecko);
+  }
+  
+  catch(err){
+    return GECKOCOMPARE(ticker,currency);
+  }
+  
+}
+
+
 /** GECKOVOLUME
  * Imports CoinGecko's cryptocurrency 24h volumes into Google spreadsheets. The feed is a ONE-dimensional array.
  * By default, data gets transformed into a number so it looks more like a normal number data import. 
@@ -732,4 +802,3 @@ async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
   }
 
 }  
-
