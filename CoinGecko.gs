@@ -48,7 +48,7 @@
 
 async function GECKOPRICE(ticker,currency){
 
-
+  Utilities.sleep(Math.random() * 100)
   ticker=ticker.toUpperCase()
   currency=currency.toLowerCase()
   id_cache=ticker+currency+'price'
@@ -109,7 +109,7 @@ async function GECKOPRICE(ticker,currency){
  **/
 
 async function GECKOVOLUME(ticker,currency){
-  
+  Utilities.sleep(Math.random() * 100)
   ticker=ticker.toUpperCase()
   currency=currency.toLowerCase()
   id_cache=ticker+currency+'volume'
@@ -175,7 +175,7 @@ async function GECKOVOLUME(ticker,currency){
  * @returns the fully diluted market cap of BTCUSD
  **/
 async function GECKOCAP(ticker,currency,diluted=false){
-
+  Utilities.sleep(Math.random() * 100)
   ticker=ticker.toUpperCase()
   currency=currency.toLowerCase()
   id_cache=ticker+currency+'mkt'
@@ -246,7 +246,7 @@ async function GECKOCAP(ticker,currency,diluted=false){
  * @return a one-dimensional array containing the price
  **/
 async function GECKOPRICEBYNAME(id_coin,currency){
-  
+  Utilities.sleep(Math.random() * 100)
   id_coin=id_coin.toLowerCase()
   currency=currency.toLowerCase()
   id_cache=id_coin+currency+'pricebyname'
@@ -295,6 +295,7 @@ async function GECKOPRICEBYNAME(id_coin,currency){
  * @return a one-dimensional array containing the marketcap
  **/
 async function GECKOCAPBYNAME(id_coin,currency,diluted=false){
+  Utilities.sleep(Math.random() * 100)
   id_coin=id_coin.toLowerCase()
   currency=currency.toLowerCase()
   id_cache=id_coin+currency+'capbyname'
@@ -353,7 +354,7 @@ async function GECKOCAPBYNAME(id_coin,currency,diluted=false){
  * @return a one-dimensional array containing the 24h volume
  **/
 async function GECKOVOLUMEBYNAME(id_coin,currency){
-  
+  Utilities.sleep(Math.random() * 100)
   id_coin=id_coin.toLowerCase()
   currency=currency.toLowerCase()
   id_cache=id_coin+currency+'volbyname'
@@ -404,7 +405,7 @@ async function GECKOVOLUMEBYNAME(id_coin,currency){
  * @return a one-dimensional array containing the 7D%  price change on BTC (week price % change).
  **/
 async function GECKOCHANGE(ticker,ticker2,type, nb_days){
-  
+  Utilities.sleep(Math.random() * 100)
   ticker=ticker.toUpperCase()
   ticker2=ticker2.toLowerCase()
   type=type.toLowerCase()
@@ -474,6 +475,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
  **/
 
 async function GECKOATH(ticker,currency){
+  Utilities.sleep(Math.random() * 100)
   ticker=ticker.toUpperCase()
   currency=currency.toLowerCase()
   id_cache=ticker+currency+"ath"
@@ -537,7 +539,7 @@ async function GECKOATH(ticker,currency){
  * @return a one-dimensional array containing the historical open price of BTC -LTC on the 31-12-2020
  **/
 async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy){
-  
+  Utilities.sleep(Math.random() * 100)
   ticker=ticker.toUpperCase()
   ticker2=ticker2.toLowerCase()
   type=type.toLowerCase()
@@ -610,7 +612,7 @@ async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy){
  * @return a one-dimensional array containing the 7D%  price change on BTC (week price % change).
  **/
 async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
-  
+  Utilities.sleep(Math.random() * 100)
   id_coin=id_coin.toLowerCase()
   ticker2=ticker2.toLowerCase()
   type=type.toLowerCase()
@@ -655,13 +657,13 @@ async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
  * Imports CoinGecko's cryptocurrency data point, ath, 24h_low, market cap, price... into Google spreadsheets. 
  * For example:
  *
- *   =GECKO_ID_DATA("bitcoin","ath/usd", false)
- *   =GECKO_ID_DATA("ETH","ath_change_percentage")
+ *   =GECKO_ID_DATA("bitcoin","market_data/ath/usd", false)
+ *   =GECKO_ID_DATA("ETH","market_data/ath_change_percentage")
  *   =GECKO_ID_DATA("LTC","market_data/high_24h/usd",true)
  *               
  * 
  * @param {ticker}                 the cryptocurrency ticker 
- * @param {parameter}              the parameter separated by "/" ex:   "ath/usd" or "ath_change_percentage/usd" or "high_24h/usd"
+ * @param {parameter}              the parameter separated by "/" ex: "market_data/ath/usd" or "market_data/high_24h/usd"
  * @param {by_ticker boolean}       an optional true (data by ticker) false (data by id_name)          
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
@@ -669,9 +671,10 @@ async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
  * @return a one-dimensional array containing the specified parameter.
  **/
 async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
-  
+  Utilities.sleep(Math.random() * 100)
+  ticker=ticker.toUpperCase()
   if(by_ticker==true){
-    ticker=ticker.toUpperCase()
+    
     try{
     
     url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
@@ -728,7 +731,7 @@ async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
   }
   
   catch(err){
-    return "";
+    return GECKO_ID_DATA(ticker,parameter, by_ticker);
   }
 
 }  
