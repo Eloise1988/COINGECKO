@@ -17,7 +17,6 @@
      GECKOVOLBYNAME        For use by end users to cryptocurrency volumes using id name
      GECKOCAPBYNAME        For use by end users to cryptocurrency total market caps using id name
      GECKOCHANGE           For use by end users to cryptocurrency % change price, volume, mkt
-     GECKOHIST             For use by end users to cryptocurrency HISTORICAL price, volume, mkt
      GECKOATH              For use by end users to cryptocurrency All Time High Prices
      GECKO_ID_DATA         For use by end users to cryptocurrency data end points
 
@@ -455,7 +454,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
   }
   
   catch(err){
-    return "";
+    return GECKOCHANGE(ticker,ticker2,type, nb_days);
   }
 
 }  
