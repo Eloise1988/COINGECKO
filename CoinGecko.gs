@@ -648,7 +648,7 @@ async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
   }
   
   catch(err){
-    return "";
+    return GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days);
   }
 
 }  
@@ -735,4 +735,3 @@ async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
   }
 
 }  
-
