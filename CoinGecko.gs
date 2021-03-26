@@ -538,21 +538,18 @@ async function GECKOATH(ticker,currency){
  *
  * @return a one-dimensional array containing the historical open price of BTC -LTC on the 31-12-2020
  **/
-async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy){
+async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true){
   Utilities.sleep(Math.random() * 100)
   ticker=ticker.toUpperCase()
   ticker2=ticker2.toLowerCase()
   type=type.toLowerCase()
   date_ddmmyyy=date_ddmmyyy.toString()
   id_cache=ticker+ticker2+type+date_ddmmyyy+'hist'
-  
-  // Gets a cache that is common to all users of the script.
-  var cache = CacheService.getScriptCache();
-  var cached = cache.get(id_cache);
-  if (cached != null) {
-    return Number(cached);
-  }
-  try{
+
+  if(by_ticker==true){
+    
+    try{
+    
     url="https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1"
     
     var res = await UrlFetchApp.fetch(url);
@@ -565,7 +562,24 @@ async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy){
         id_coin=parsedJSON.coins[i].id.toString();
         break;
       }
-    }
+    }}
+    catch(err){
+    return "#reload-error";
+  }
+  }
+  else{
+    id_coin=ticker.toLowerCase()
+  }
+  
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
+  try{
+    
     
     url="https://api.coingecko.com/api/v3/coins/"+id_coin+"/history?date="+date_ddmmyyy+"&localization=false";
     
@@ -589,7 +603,7 @@ async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy){
   }
   
   catch(err){
-    return "";
+    return GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true);
   }
 
 }  
