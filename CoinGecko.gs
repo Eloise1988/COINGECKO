@@ -525,14 +525,15 @@ async function GECKOATH(ticker,currency){
  * For example:
  *
  *   =GECKOHIST("BTC","LTC","price", "31-12-2020")
- *   =GECKOHIST("ETH","USD","volume", "01-01-2021")
- *   =GECKOHIST("YFI","EUR","marketcap","06-06-2020")
+ *   =GECKOHIST("ethereum","USD","volume", "01-01-2021",false)
+ *   =GECKOHIST("YFI","EUR","marketcap","06-06-2020",true)
  *               
  * 
  * @param {ticker}                 the cryptocurrency ticker 
  * @param {ticker2}                the cryptocurrency ticker against which you want the %chage
  * @param {price,volume, or marketcap}     the type of change you are looking for
  * @param {date_ddmmyyy}           the date format dd-mm-yyy get open of the specified date, for close dd-mm-yyy+ 1day
+ * @param {by_ticker boolean}       an optional true (data by ticker) false (data by id_name) 
  * @param {parseOptions}           an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
