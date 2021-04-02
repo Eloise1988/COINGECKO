@@ -566,7 +566,7 @@ async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true){
       }
     }}
     catch(err){
-    return "#reload-error";
+      return GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true);
   }
   }
   else{
@@ -708,7 +708,7 @@ async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
       }
     }}
     catch(err){
-    return "#error_ticker";
+    return GECKO_ID_DATA(ticker,parameter, by_ticker);
   }
   }
   else{
