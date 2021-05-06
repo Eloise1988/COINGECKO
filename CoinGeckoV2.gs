@@ -51,8 +51,8 @@
  *   =GECKOPRICE("BTC-EUR")
  *   =GECKOPRICE(B16:B35,"CHF")           
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {defaultVersusCoin}              by default prices are against "usd"
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {defaultVersusCoin}              by default prices are against "usd", only 1 input
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
@@ -115,8 +115,8 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
  *   =GECKOVOLUME(B16:B35)
  *               
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
+ * @param {cryptocurrencies}               the cryptocurrency RANGE tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
@@ -179,8 +179,8 @@ async function GECKOVOLUME(ticker_array,currency){
  *   =GECKOCAP(B16:B35)
  *               
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
@@ -241,8 +241,8 @@ async function GECKOCAP(ticker_array,currency){
  *   =GECKOCAPDILUTED("BTC","JPY")
  *   =GECKOCAPDILUTED(B16:B35)              
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
@@ -302,8 +302,8 @@ async function GECKOCAPDILUTED(ticker_array,currency){
  *   =GECKO24HPRICECHANGE("BTC","EUR")
  *   =GECKO24HPRICECHANGE(B16:B35)               
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
@@ -364,12 +364,12 @@ async function GECKO24HPRICECHANGE(ticker_array,currency){
  *   =GECKORANK("BTC")
  *               
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
- * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
+ * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
- * @returns the fully diluted market cap of BTCUSD
+ * @returns the Ranks of cryptocurrencies 
  **/ 
 async function GECKORANK(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
@@ -426,14 +426,14 @@ async function GECKORANK(ticker_array,currency){
  *   =GECKOATH("ethereum","EUR")
  *   =GECKOATH(a1:a10)                 
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return a one-dimensional array containing the ATH price
  **/
- async function GECKOATH(ticker_array,currency,defaultValueForMissingData){
+ async function GECKOATH(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
@@ -489,8 +489,8 @@ async function GECKORANK(ticker_array,currency){
  *   =GECKOATL(a1:a10)  
  *               
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
@@ -552,9 +552,9 @@ async function GECKORANK(ticker_array,currency){
  *   =GECKO24HIGH(a1:a10) 
  *               
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
- * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
+ * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return an array containing the 24hour high prices
@@ -615,9 +615,9 @@ async function GECKORANK(ticker_array,currency){
  *   =GECKO24LOW(a1:a10) 
  *               
  * 
- * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {currency}                       by default "usd"
- * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @param {cryptocurrencies}               the cryptocurrency RANGE of tickers/id you want the prices from
+ * @param {currency}                       by default "usd", only 1 parameter
+ * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return an array containing the 24h low prices
@@ -678,9 +678,9 @@ async function GECKORANK(ticker_array,currency){
  *   =GECKOHIST("YFI","EUR","marketcap","06-06-2020",true)
  *               
  * 
- * @param {ticker}                 the cryptocurrency ticker 
- * @param {ticker2}                the cryptocurrency ticker against which you want the %chage
- * @param {price,volume, or marketcap}     the type of change you are looking for
+ * @param {ticker}                 the cryptocurrency ticker, only 1 parameter 
+ * @param {ticker2}                the cryptocurrency ticker against which you want the %chage, only 1 parameter
+ * @param {price,volume, or marketcap}   the type of change you are looking for
  * @param {date_ddmmyyy}           the date format dd-mm-yyy get open of the specified date, for close dd-mm-yyy+ 1day
  * @param {by_ticker boolean}       an optional true (data by ticker) false (data by id_name) 
  * @param {parseOptions}           an optional fixed cell for automatic refresh of the data
@@ -765,8 +765,8 @@ async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true){
  *   =GECKOCHANGE("litecoin","EUR","marketcap",365)
  *               
  * 
- * @param {ticker}                 the cryptocurrency ticker 
- * @param {ticker2}                the cryptocurrency ticker/currency against which you want the %change
+ * @param {ticker}                 the cryptocurrency ticker, only 1 parameter 
+ * @param {ticker2}                the cryptocurrency ticker/currency against which you want the %change, only 1 parameter
  * @param {price,volume, or marketcap}     the type of change you are looking for
  * @param {nb_days}                 the number of days you are looking for the price change, 365days=1year price change 
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
@@ -824,7 +824,7 @@ async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
  *   =GECKO_ID_DATA("LTC","market_data/high_24h/usd",true)
  *               
  * 
- * @param {ticker}                 the cryptocurrency ticker 
+ * @param {ticker}                 the cryptocurrency ticker, only 1 parameter 
  * @param {parameter}              the parameter separated by "/" ex: "market_data/ath/usd" or "market_data/high_24h/usd"
  * @param {by_ticker boolean}       an optional true (data by ticker) false (data by id_name)          
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
@@ -906,8 +906,8 @@ async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
  *   =GECKOCHANGE("YFI","EUR","marketcap",365)
  *               
  * 
- * @param {ticker}                 the cryptocurrency ticker 
- * @param {ticker2}                the cryptocurrency ticker against which you want the %chage
+ * @param {ticker}                 the cryptocurrency ticker, only 1 parameter 
+ * @param {ticker2}                the cryptocurrency ticker against which you want the %chaNge, only 1 parameter
  * @param {price,volume, or marketcap}     the type of change you are looking for
  * @param {nb_days}                 the number of days you are looking for the price change, 365days=1year price change 
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
@@ -976,7 +976,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
  *   =GECKOLOGO("BTC",$A$1)
  *               
  * 
- * @param {cryptocurrency}          the cryptocurrency ticker
+ * @param {cryptocurrency}          the cryptocurrency ticker, only 1 parameter
  * @param {against fiat currency}   the fiat currency ex: usd  or eur
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
@@ -1034,7 +1034,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
  *   =GECKOLOGOBYNAME("bitcoin",$A$1)
  *               
  * 
- * @param {cryptocurrency}          the cryptocurrency id 
+ * @param {cryptocurrency}          the cryptocurrency id, only 1 parameter 
  * @param {against fiat currency}   the fiat currency ex: usd  or eur
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
@@ -1080,7 +1080,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
  *   =GECKOPRICEBYNAME("bitcoin", "USD",$A$1)
  *               
  * 
- * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
+ * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd, only 1 parameter 
  * @param {against fiat currency}   the fiat currency ex: usd  or eur
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
@@ -1128,7 +1128,7 @@ async function GECKOPRICEBYNAME(id_coin,currency){
  *
  *   =GECKOCAPBYNAME("bitcoin", "USD",true)
  * 
- * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
+ * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd, only 1 parameter 
  * @param {against fiat currency}   the fiat currency ex: usd  or eur
  * @param {mktcap or fully diluted mktcap}  an optional boolean to get fully diluted valuation
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
@@ -1188,7 +1188,7 @@ async function GECKOCAPBYNAME(id_coin,currency,diluted=false){
  *   =GECKOVOLUMEBYNAME("bitcoin", "USD",$A$1)
  *               
  * 
- * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd 
+ * @param {id_coin}                 the id name of cryptocurrency ticker found in web address of Coingecko ex:https://www.coingecko.com/en/coins/bitcoin/usd, only 1 parameter 
  * @param {against fiat currency}   the fiat currency ex: usd  or eur
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
