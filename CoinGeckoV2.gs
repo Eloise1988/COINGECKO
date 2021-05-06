@@ -63,12 +63,11 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
 
   Utilities.sleep(Math.random() * 100)
   try{
-    pairExtractRegex = /(.*)-(.*)/, coinSet = new Set(), versusCoinSet = new Set(), pairList = [];
+    pairExtractRegex = /(.*)[/](.*)/, coinSet = new Set(), versusCoinSet = new Set(), pairList = [];
 
     defaultValueForMissingData = null;
     if(typeof defaultVersusCoin === 'undefined') defaultVersusCoin = "usd";
     defaultVersusCoin=defaultVersusCoin.toLowerCase();
-    Logger.log(defaultVersusCoin)
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
 
@@ -83,6 +82,7 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/simple/price?ids=" + coinList + "&vs_currencies=" + versusCoinList).getContentText());
+    Logger.log(tickerList)
     cache.put(id_cache,tickerList);
     
     return pairList.map((pair) => pair[0] && (tickerList[pair[0]] && (tickerList[pair[0]][pair[1]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
@@ -126,7 +126,7 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
 async function GECKOVOLUME(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
@@ -189,7 +189,7 @@ async function GECKOVOLUME(ticker_array,currency){
 async function GECKOCAP(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
@@ -251,7 +251,7 @@ async function GECKOCAP(ticker_array,currency){
 async function GECKOCAPDILUTED(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
@@ -312,7 +312,7 @@ async function GECKOCAPDILUTED(ticker_array,currency){
 async function GECKO24HPRICECHANGE(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
@@ -374,7 +374,7 @@ async function GECKO24HPRICECHANGE(ticker_array,currency){
 async function GECKORANK(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
@@ -436,7 +436,7 @@ async function GECKORANK(ticker_array,currency){
  async function GECKOATH(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
@@ -499,7 +499,7 @@ async function GECKORANK(ticker_array,currency){
  async function GECKOATL(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
@@ -562,7 +562,7 @@ async function GECKORANK(ticker_array,currency){
  async function GECKO24HIGH(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
@@ -625,7 +625,7 @@ async function GECKORANK(ticker_array,currency){
  async function GECKO24LOW(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
 
