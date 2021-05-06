@@ -1,7 +1,7 @@
 /*====================================================================================================================================*
   CoinGecko Google Sheet Feed by Eloise1988
   ====================================================================================================================================
-  Version:      1.0
+  Version:      2.0
   Project Page: https://github.com/Eloise1988/COINGECKO
   Copyright:    (c) 2021 by Eloise1988
                 
@@ -25,7 +25,8 @@
      GECKO24HIGH           For use by end users to cryptocurrency 24H Low Price
      GECKO24LOW            For use by end users to cryptocurrency 24H High Price
      GECKO_ID_DATA         For use by end users to cryptocurrency data end points
-     GECKO_LOGO            For use by end users to cryptocurrency LOGOS
+     GECKO_LOGO            For use by end users to cryptocurrency Logos by ticker
+     GECKO_LOGOBYNAME      For use by end users to cryptocurrency Logos by id
 
 
   If ticker isn't functionning please refer to the coin's id you can find in the following JSON pas: https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1
@@ -48,24 +49,26 @@
  *
  *   =GECKOPRICE("BTC")
  *   =GECKOPRICE("BTC-EUR")
- *   =GECKOPRICE(B16:B35)           
+ *   =GECKOPRICE(B16:B35,"CHF")           
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
- * @param {defaultValueForMissingData}   by default "Coin Not Found"
- * @param {parseOptions}                 an optional fixed cell for automatic refresh of the data
+ * @param {defaultVersusCoin}              by default prices are against "usd"
+ * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return a dimensional array containing the prices
  **/
 
-async function GECKOPRICE(ticker_array,defaultValueForMissingData){
+async function GECKOPRICE(ticker_array,defaultVersusCoin){
 
   Utilities.sleep(Math.random() * 100)
   try{
-    let defaultVersusCoin = "usd", pairExtractRegex = /(.*)-(.*)/, coinSet = new Set(), versusCoinSet = new Set(), pairList = [];
+    pairExtractRegex = /(.*)-(.*)/, coinSet = new Set(), versusCoinSet = new Set(), pairList = [];
 
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
-
+    defaultValueForMissingData = null;
+    if(typeof defaultVersusCoin === 'undefined') defaultVersusCoin = "usd";
+    defaultVersusCoin=defaultVersusCoin.toLowerCase();
+    Logger.log(defaultVersusCoin)
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
 
@@ -99,7 +102,7 @@ async function GECKOPRICE(ticker_array,defaultValueForMissingData){
       }
     }}
     catch(err){
-    return GECKOPRICE(ticker_array,defaultValueForMissingData);
+    return GECKOPRICE(ticker_array,defaultVersusCoin);
   }
   }
   
@@ -114,24 +117,23 @@ async function GECKOPRICE(ticker_array,defaultValueForMissingData){
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return an array containing the 24h volumes
  **/
 
-async function GECKOVOLUME(ticker_array,currency,defaultValueForMissingData){
+async function GECKOVOLUME(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'vol'
     var cache = CacheService.getScriptCache();
@@ -164,7 +166,7 @@ async function GECKOVOLUME(ticker_array,currency,defaultValueForMissingData){
     }
   }
   catch(err){
-    return GECKOVOLUME(ticker_array,currency,defaultValueForMissingData);
+    return GECKOVOLUME(ticker_array,currency);
   }
   
 }  
@@ -179,23 +181,22 @@ async function GECKOVOLUME(ticker_array,currency,defaultValueForMissingData){
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @returns an array of market caps
  **/ 
-async function GECKOCAP(ticker_array,currency,defaultValueForMissingData){
+async function GECKOCAP(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'mktcap'
     var cache = CacheService.getScriptCache();
@@ -228,7 +229,7 @@ async function GECKOCAP(ticker_array,currency,defaultValueForMissingData){
     }
   }
   catch(err){
-    return GECKOCAP(ticker_array,currency,defaultValueForMissingData);
+    return GECKOCAP(ticker_array,currency);
   }
   
 }  
@@ -242,23 +243,22 @@ async function GECKOCAP(ticker_array,currency,defaultValueForMissingData){
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @returns the fully diluted market caps 
  **/ 
-async function GECKOCAPDILUTED(ticker_array,currency,defaultValueForMissingData){
+async function GECKOCAPDILUTED(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'mktcapdiluted'
     var cache = CacheService.getScriptCache();
@@ -291,7 +291,7 @@ async function GECKOCAPDILUTED(ticker_array,currency,defaultValueForMissingData)
     }
   }
   catch(err){
-    return GECKOCAPDILUTED(ticker_array,currency,defaultValueForMissingData);
+    return GECKOCAPDILUTED(ticker_array,currency);
   }
   
 }  
@@ -304,23 +304,22 @@ async function GECKOCAPDILUTED(ticker_array,currency,defaultValueForMissingData)
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @returns the cryptocurrencies 24H percent price change
  **/ 
-async function GECKO24HPRICECHANGE(ticker_array,currency,defaultValueForMissingData){
+async function GECKO24HPRICECHANGE(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'GECKO24HPRICECHANGE'
     var cache = CacheService.getScriptCache();
@@ -353,7 +352,7 @@ async function GECKO24HPRICECHANGE(ticker_array,currency,defaultValueForMissingD
     }
   }
   catch(err){
-    return GECKO24HPRICECHANGE(ticker_array,currency,defaultValueForMissingData);
+    return GECKO24HPRICECHANGE(ticker_array,currency);
   }
   
 }  
@@ -367,23 +366,22 @@ async function GECKO24HPRICECHANGE(ticker_array,currency,defaultValueForMissingD
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @returns the fully diluted market cap of BTCUSD
  **/ 
-async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
+async function GECKORANK(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'GECKORANK'
     var cache = CacheService.getScriptCache();
@@ -416,7 +414,7 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
     }
   }
   catch(err){
-    return GECKORANK(ticker_array,currency,defaultValueForMissingData);
+    return GECKORANK(ticker_array,currency);
   }
   
 }  
@@ -430,7 +428,6 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
@@ -441,12 +438,12 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'ath'
     var cache = CacheService.getScriptCache();
@@ -479,7 +476,7 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
     }
   }
   catch(err){
-    return GECKOATH(ticker_array,currency,defaultValueForMissingData);
+    return GECKOATH(ticker_array,currency);
   }
   
 } 
@@ -494,23 +491,22 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}                   an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return a one-dimensional array containing the ATL prices
  **/
- async function GECKOATL(ticker_array,currency,defaultValueForMissingData){
+ async function GECKOATL(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'atl'
     var cache = CacheService.getScriptCache();
@@ -543,7 +539,7 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
     }
   }
   catch(err){
-    return GECKOATL(ticker_array,currency,defaultValueForMissingData);
+    return GECKOATL(ticker_array,currency);
   }
   
 }
@@ -558,23 +554,22 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return an array containing the 24hour high prices
  **/
- async function GECKO24HIGH(ticker_array,currency,defaultValueForMissingData){
+ async function GECKO24HIGH(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'GECKO24HIGH'
     var cache = CacheService.getScriptCache();
@@ -607,7 +602,7 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
     }
   }
   catch(err){
-    return GECKO24HIGH(ticker_array,currency,defaultValueForMissingData);
+    return GECKO24HIGH(ticker_array,currency);
   }
   
 }  
@@ -622,23 +617,22 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
  * 
  * @param {cryptocurrencies}               the cryptocurrency ticker/array of tickers/id you want the prices from
  * @param {currency}                       by default "usd"
- * @param {defaultValueForMissingData}     by default "Coin Not Found"
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
  * @return an array containing the 24h low prices
  **/
- async function GECKO24LOW(ticker_array,currency,defaultValueForMissingData){
+ async function GECKO24LOW(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
   try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)-(.*)/, pairList = [];
     
-    if(typeof defaultValueForMissingData === 'undefined') defaultValueForMissingData = null;
+    defaultValueForMissingData = null;
 
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
     
-    if(currency) defaultVersusCoin = currency;
+    if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
     id_cache=coinList+defaultVersusCoin+'GECKO24LOW'
     var cache = CacheService.getScriptCache();
@@ -671,7 +665,7 @@ async function GECKORANK(ticker_array,currency,defaultValueForMissingData){
     }
   }
   catch(err){
-    return GECKO24HIGH(ticker_array,currency,defaultValueForMissingData);
+    return GECKO24HIGH(ticker_array,currency);
   }
   
 }  
@@ -982,12 +976,12 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
  *   =GECKOLOGO("BTC",$A$1)
  *               
  * 
- * @param {cryptocurrency}          the cryptocurrency ticker/array using id or ticker
+ * @param {cryptocurrency}          the cryptocurrency ticker
  * @param {against fiat currency}   the fiat currency ex: usd  or eur
  * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
- * @return a one-dimensional array containing the ATH price
+ * @return the logo image
  **/
  async function GECKOLOGO(ticker){
   Utilities.sleep(Math.random() * 100)
@@ -1033,6 +1027,52 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
   }
   
 } 
+/** GECKOLOGOBYNAME
+ * Imports CoinGecko's cryptocurrency Logos into Google spreadsheets. 
+ * For example:
+ *
+ *   =GECKOLOGOBYNAME("bitcoin",$A$1)
+ *               
+ * 
+ * @param {cryptocurrency}          the cryptocurrency id 
+ * @param {against fiat currency}   the fiat currency ex: usd  or eur
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return the logo image
+ **/
+ async function GECKOLOGOBYNAME(id_coin){
+  Utilities.sleep(Math.random() * 100)
+  id_coin=id_coin.toLowerCase()
+  
+  
+  id_cache=id_coin+'USDGECKOLOGO'
+    var cache = CacheService.getScriptCache();
+    var cached = cache.get(id_cache);
+    if (cached != null) {
+      
+      return cached; 
+    }
+  try{
+      
+    url="https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=" + id_coin;
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+  
+    Logger.log(parsedJSON)
+    cache.put(id_cache, parsedJSON[0].image);       
+    return parsedJSON[0].image;
+    
+    
+  }
+  catch(err){
+    return GECKOLOGOBYNAME(id_coin);
+  }
+  
+} 
+
 /** GECKOPRICEBYNAME
  * Imports CoinGecko's cryptocurrency prices into Google spreadsheets. The id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd).
  * For example:
