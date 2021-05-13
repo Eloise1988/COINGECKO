@@ -63,7 +63,7 @@
 async function GECKOPRICE(ticker_array,defaultVersusCoin){
 
   Utilities.sleep(Math.random() * 100)
-  //try{
+  try{
     pairExtractRegex = /(.*)[/](.*)/, coinSet = new Set(), versusCoinSet = new Set(), pairList = [];
 
     defaultValueForMissingData = null;
@@ -109,11 +109,11 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
         coinSet.add(pair[0]);
         versusCoinSet.add(pair[1]);
       }
-    }//}
-    /*catch(err){
-    return err
-    //return GECKOPRICE(ticker_array,defaultVersusCoin);
-  }*/
+    }}
+    catch(err){
+    //return err
+    return GECKOPRICE(ticker_array,defaultVersusCoin);
+  }
   }
   
 /** GECKOVOLUME
@@ -135,7 +135,7 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
 
 async function GECKOVOLUME(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
-  //try{
+  try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
@@ -174,11 +174,11 @@ async function GECKOVOLUME(ticker_array,currency){
         coinSet.add(pair[0]);
       }
     }
-  /*}
+  }
   catch(err){
-    return err
-    //return GECKOVOLUME(ticker_array,currency);
-  }*/
+    //return err
+    return GECKOVOLUME(ticker_array,currency);
+  }
   
 }  
 /** GECKOCAP
@@ -240,8 +240,8 @@ async function GECKOCAP(ticker_array,currency){
     }
   }
   catch(err){
-    return err
-    //return GECKOCAP(ticker_array,currency);
+    //return err
+    return GECKOCAP(ticker_array,currency);
   }
   
 }  
@@ -303,8 +303,8 @@ async function GECKOCAPDILUTED(ticker_array,currency){
     }
   }
   catch(err){
-    return err
-    //return GECKOCAPDILUTED(ticker_array,currency);
+    //return err
+    return GECKOCAPDILUTED(ticker_array,currency);
   }
   
 }  
@@ -365,8 +365,8 @@ async function GECKO24HPRICECHANGE(ticker_array,currency){
     }
   }
   catch(err){
-    return err
-    //return GECKO24HPRICECHANGE(ticker_array,currency);
+    //return err
+    return GECKO24HPRICECHANGE(ticker_array,currency);
   }
   
 }  
@@ -428,8 +428,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return err
-    //return GECKORANK(ticker_array,currency);
+    //return err
+    return GECKORANK(ticker_array,currency);
   }
   
 }  
@@ -491,8 +491,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return err
-    //return GECKOATH(ticker_array,currency);
+    //return err
+    return GECKOATH(ticker_array,currency);
   }
   
 } 
@@ -555,8 +555,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return err
-    //return GECKOATL(ticker_array,currency);
+    //return err
+    return GECKOATL(ticker_array,currency);
   }
   
 }
@@ -619,8 +619,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return err
-    //return GECKO24HIGH(ticker_array,currency);
+    //return err
+    return GECKO24HIGH(ticker_array,currency);
   }
   
 }  
@@ -683,8 +683,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return err
-    //return GECKO24LOW(ticker_array,currency);
+    //return err
+    return GECKO24LOW(ticker_array,currency);
   }
   
 }  
