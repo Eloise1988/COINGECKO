@@ -1,3 +1,4 @@
+
 /*====================================================================================================================================*
   CoinGecko Google Sheet Feed by Eloise1988
   ====================================================================================================================================
@@ -62,7 +63,7 @@
 async function GECKOPRICE(ticker_array,defaultVersusCoin){
 
   Utilities.sleep(Math.random() * 100)
-  try{
+  //try{
     pairExtractRegex = /(.*)[/](.*)/, coinSet = new Set(), versusCoinSet = new Set(), pairList = [];
 
     defaultValueForMissingData = null;
@@ -71,21 +72,29 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
     if(ticker_array.map) ticker_array.map(pairExtract);
     else pairExtract(ticker_array);
 
+
     let coinList = [...coinSet].join("%2C");
     let versusCoinList = [...versusCoinSet].join("%2C");
-
-    id_cache=coinList+versusCoinList+'price'
+    id_cache=getBase64EncodedMD5(coinList+versusCoinList+'price');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
-      pairList.map((pair) => pair[0] && (cached[pair[0]] && (cached[pair[0]][pair[1]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");
+      result=cached.split(',');
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
-    
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/simple/price?ids=" + coinList + "&vs_currencies=" + versusCoinList).getContentText());
-    Logger.log(tickerList)
-    cache.put(id_cache,tickerList);
     
-    return pairList.map((pair) => pair[0] && (tickerList[pair[0]] && (tickerList[pair[0]][pair[1]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    var dict = []; 
+    for (var i=0;i<pairList.length;i++) {
+        if (tickerList.hasOwnProperty(pairList[i][0])) {
+          if (tickerList[pairList[i][0]].hasOwnProperty(pairList[i][1])) {
+            dict.push(tickerList[pairList[i][0]][pairList[i][1]]);}
+          else{dict.push("");}}
+        else{dict.push("");}
+        };
+    cache.put(id_cache,dict);
+    
+    return dict
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -100,10 +109,11 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
         coinSet.add(pair[0]);
         versusCoinSet.add(pair[1]);
       }
-    }}
-    catch(err){
-    return GECKOPRICE(ticker_array,defaultVersusCoin);
-  }
+    }//}
+    /*catch(err){
+    return err
+    //return GECKOPRICE(ticker_array,defaultVersusCoin);
+  }*/
   }
   
 /** GECKOVOLUME
@@ -125,7 +135,7 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
 
 async function GECKOVOLUME(ticker_array,currency){
   Utilities.sleep(Math.random() * 100)
-  try{
+  //try{
     let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
     
     defaultValueForMissingData = null;
@@ -135,12 +145,12 @@ async function GECKOVOLUME(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'vol'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'vol');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)}); 
+      return result.map(function(n) { return n && ("" || Number(n))});  
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -148,9 +158,9 @@ async function GECKOVOLUME(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].total_volume;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -164,10 +174,11 @@ async function GECKOVOLUME(ticker_array,currency){
         coinSet.add(pair[0]);
       }
     }
-  }
+  /*}
   catch(err){
-    return GECKOVOLUME(ticker_array,currency);
-  }
+    return err
+    //return GECKOVOLUME(ticker_array,currency);
+  }*/
   
 }  
 /** GECKOCAP
@@ -198,12 +209,12 @@ async function GECKOCAP(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'mktcap'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'mktcap');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)}); 
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -211,9 +222,9 @@ async function GECKOCAP(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].market_cap;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -229,7 +240,8 @@ async function GECKOCAP(ticker_array,currency){
     }
   }
   catch(err){
-    return GECKOCAP(ticker_array,currency);
+    return err
+    //return GECKOCAP(ticker_array,currency);
   }
   
 }  
@@ -260,12 +272,12 @@ async function GECKOCAPDILUTED(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'mktcapdiluted'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'mktcapdiluted');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)}); 
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -273,9 +285,9 @@ async function GECKOCAPDILUTED(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].fully_diluted_valuation;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -291,7 +303,8 @@ async function GECKOCAPDILUTED(ticker_array,currency){
     }
   }
   catch(err){
-    return GECKOCAPDILUTED(ticker_array,currency);
+    return err
+    //return GECKOCAPDILUTED(ticker_array,currency);
   }
   
 }  
@@ -321,12 +334,12 @@ async function GECKO24HPRICECHANGE(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'GECKO24HPRICECHANGE'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'GECKO24HPRICECHANGE');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)}); 
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -334,9 +347,9 @@ async function GECKO24HPRICECHANGE(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=parseFloat(tickerList[i].price_change_percentage_24h)/100;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -352,7 +365,8 @@ async function GECKO24HPRICECHANGE(ticker_array,currency){
     }
   }
   catch(err){
-    return GECKO24HPRICECHANGE(ticker_array,currency);
+    return err
+    //return GECKO24HPRICECHANGE(ticker_array,currency);
   }
   
 }  
@@ -383,12 +397,12 @@ async function GECKORANK(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'GECKORANK'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'GECKORANK');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)}); 
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -396,9 +410,9 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].market_cap_rank;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -414,7 +428,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return GECKORANK(ticker_array,currency);
+    return err
+    //return GECKORANK(ticker_array,currency);
   }
   
 }  
@@ -445,12 +460,12 @@ async function GECKORANK(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'ath'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'ath');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)}); 
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -458,9 +473,9 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].ath;
         };
-    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -476,7 +491,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return GECKOATH(ticker_array,currency);
+    return err
+    //return GECKOATH(ticker_array,currency);
   }
   
 } 
@@ -508,12 +524,12 @@ async function GECKORANK(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'atl'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'atl');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)});
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -521,9 +537,9 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].atl;
         };
-    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -539,7 +555,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return GECKOATL(ticker_array,currency);
+    return err
+    //return GECKOATL(ticker_array,currency);
   }
   
 }
@@ -571,12 +588,12 @@ async function GECKORANK(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'GECKO24HIGH'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'GECKO24HIGH');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)});
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -584,9 +601,9 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].high_24h;
         };
-    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -602,7 +619,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return GECKO24HIGH(ticker_array,currency);
+    return err
+    //return GECKO24HIGH(ticker_array,currency);
   }
   
 }  
@@ -634,12 +652,12 @@ async function GECKORANK(ticker_array,currency){
     
     if(currency) defaultVersusCoin = currency.toLowerCase();
     let coinList = [...coinSet].join("%2C");
-    id_cache=coinList+defaultVersusCoin+'GECKO24LOW'
+    id_cache=getBase64EncodedMD5(coinList+defaultVersusCoin+'GECKO24LOW');
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
       result=cached.split(',');
-      return result.map(function(n) { return !isNaN(Number(n)) && Number(n)});
+      return result.map(function(n) { return n && ("" || Number(n))}); 
     }
     
     let tickerList = JSON.parse(UrlFetchApp.fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList).getContentText());
@@ -647,9 +665,9 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].low_24h;
         };
-    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || ""));   
+    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
     
-    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "Versus Coin Not Found") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "Coin Not Found")) || "");  
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
     function pairExtract(toExtract) {
       toExtract = toExtract.toString().toLowerCase();
@@ -665,7 +683,8 @@ async function GECKORANK(ticker_array,currency){
     }
   }
   catch(err){
-    return GECKO24HIGH(ticker_array,currency);
+    return err
+    //return GECKO24LOW(ticker_array,currency);
   }
   
 }  
@@ -872,7 +891,7 @@ async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
   try{
     
     let parameter_array=parameter.split('/');
-    Logger.log(parameter_array)
+    //Logger.log(parameter_array)
 
     url="https://api.coingecko.com/api/v3/coins/"+id_coin;
     
@@ -1009,14 +1028,13 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
           break;
         }
       }
-    Logger.log(id_coin)
+    //Logger.log(id_coin)
     url="https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=" + id_coin;
     
     var res = await UrlFetchApp.fetch(url);
     var content = res.getContentText();
     var parsedJSON = JSON.parse(content);
-  
-    Logger.log(parsedJSON)
+
     cache.put(id_cache, parsedJSON[0].image);       
     return parsedJSON[0].image;
     
@@ -1061,7 +1079,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
     var content = res.getContentText();
     var parsedJSON = JSON.parse(content);
   
-    Logger.log(parsedJSON)
+    
     cache.put(id_cache, parsedJSON[0].image);       
     return parsedJSON[0].image;
     
@@ -1226,6 +1244,10 @@ async function GECKOVOLUMEBYNAME(id_coin,currency){
     return GECKOVOLUMEBYNAME(id_coin,currency);
   }
 
+}
+function getBase64EncodedMD5(text)
+{ 
+  return Utilities.base64Encode( Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, text));
 }
 //Coin list of CoinGecko is cached in script to reduce server load and increase performance.
 //This list can be updated from the text box that can be found at:
