@@ -40,8 +40,11 @@
   ------------------------------------------------------------------------------------------------------------------------------------
   Changelog:
   
-  2.0.3  New Function COINGECKO_ID 
+  2.0.3  New Function COINGECKO_ID + modification of caching time 
  *====================================================================================================================================*/
+//CACHING TIME  
+//Expiration time for caching values, by default caching data last 10min=600sec. This value is a const and can be changed to your needs.
+const expirationInSeconds=600;
 
 
 /** GECKOPRICE
@@ -93,7 +96,7 @@ async function GECKOPRICE(ticker_array,defaultVersusCoin){
           else{dict.push("");}}
         else{dict.push("");}
         };
-    cache.put(id_cache,dict);
+    cache.put(id_cache,dict,expirationInSeconds);
     
     return dict
     
@@ -159,7 +162,7 @@ async function GECKOVOLUME(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].total_volume;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -223,7 +226,7 @@ async function GECKOCAP(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].market_cap;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -286,7 +289,7 @@ async function GECKOCAPDILUTED(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].fully_diluted_valuation;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -348,7 +351,7 @@ async function GECKO24HPRICECHANGE(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=parseFloat(tickerList[i].price_change_percentage_24h)/100;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -411,7 +414,7 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].market_cap_rank;
         };
-    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -474,7 +477,7 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].ath;
         };
-    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -538,7 +541,7 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].atl;
         };
-    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -602,7 +605,7 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].high_24h;
         };
-    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -666,7 +669,7 @@ async function GECKORANK(ticker_array,currency){
     for (var i=0;i<tickerList.length;i++) {
         dict[tickerList[i].id]=tickerList[i].low_24h;
         };
-    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""));   
+    cache.put(id_cache, pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
     
     return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
     
@@ -768,7 +771,7 @@ async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true){
     { vol_gecko="Wrong parameter, either price, volume or marketcap";}
     
     if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
-      cache.put(id_cache, Number(vol_gecko));
+      cache.put(id_cache, Number(vol_gecko),expirationInSeconds);
     return Number(vol_gecko);
   }
   
@@ -826,7 +829,7 @@ async function GECKOCHANGEBYNAME(id_coin,ticker2,type, nb_days){
     { vol_gecko="Wrong parameter, either price, volume or marketcap";}
     
     if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
-      cache.put(id_cache, Number(vol_gecko));
+      cache.put(id_cache, Number(vol_gecko),expirationInSeconds);
     return Number(vol_gecko);
   }
   
@@ -908,7 +911,7 @@ async function GECKO_ID_DATA(ticker,parameter, by_ticker=true){
     }
     
     
-    cache.put(id_cache, parsedJSON);
+    cache.put(id_cache, parsedJSON,expirationInSeconds);
     return parsedJSON;
   }
   
@@ -980,7 +983,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
     { vol_gecko="Wrong parameter, either price, volume or marketcap";}
     
     if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
-      cache.put(id_cache, Number(vol_gecko));
+      cache.put(id_cache, Number(vol_gecko),expirationInSeconds);
     return Number(vol_gecko);
   }
   
@@ -1036,7 +1039,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
     var content = res.getContentText();
     var parsedJSON = JSON.parse(content);
 
-    cache.put(id_cache, parsedJSON[0].image);       
+    cache.put(id_cache, parsedJSON[0].image,expirationInSeconds);       
     return parsedJSON[0].image;
     
     
@@ -1081,7 +1084,7 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
     var parsedJSON = JSON.parse(content);
   
     
-    cache.put(id_cache, parsedJSON[0].image);       
+    cache.put(id_cache, parsedJSON[0].image,expirationInSeconds);       
     return parsedJSON[0].image;
     
     
@@ -1127,7 +1130,7 @@ async function GECKOPRICEBYNAME(id_coin,currency){
     var parsedJSON = JSON.parse(content);
     
     price_gecko=parseFloat(parsedJSON[id_coin][currency]);
-    cache.put(id_cache, Number(price_gecko));
+    cache.put(id_cache, Number(price_gecko),expirationInSeconds);
     
     return Number(price_gecko);
   }
@@ -1180,13 +1183,13 @@ async function GECKOCAPBYNAME(id_coin,currency,diluted=false){
     var parsedJSON = JSON.parse(content);
     if (diluted==true) {if (parsedJSON[0].fully_diluted_valuation!= null){
       mkt_gecko=parseFloat(parsedJSON[0].fully_diluted_valuation);
-      cache.put(id_cache, Number(mkt_gecko));}
+      cache.put(id_cache, Number(mkt_gecko),expirationInSeconds);}
       
       else {mkt_gecko=""}}
       
     else 
     { mkt_gecko=parseFloat(parsedJSON[0].market_cap);
-      cache.put(id_cache, Number(mkt_gecko));}
+      cache.put(id_cache, Number(mkt_gecko),expirationInSeconds);}
       
     
     
@@ -1236,7 +1239,7 @@ async function GECKOVOLUMEBYNAME(id_coin,currency){
     var content = res.getContentText();
     var parsedJSON = JSON.parse(content);
     vol_gecko=parseFloat(parsedJSON[0].total_volume);
-    cache.put(id_cache, Number(vol_gecko));
+    cache.put(id_cache, Number(vol_gecko),expirationInSeconds);
     
     return Number(vol_gecko);
   }
