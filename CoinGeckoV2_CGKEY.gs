@@ -47,7 +47,7 @@
 const expirationInSeconds=600;
 
 //COINGECKO PRIVATE KEY 
-//Expiration time for caching values, by default caching data last 10min=600sec. This value is a const and can be changed to your needs
+//For unlimited calls to Coingecko's API, please provide your private Key in the brackets
 const cg_pro_api_key="";
 
 
