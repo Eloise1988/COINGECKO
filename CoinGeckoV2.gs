@@ -20,6 +20,7 @@
      GECKOVOLUMEBYNAME     For use by end users to cryptocurrency 24h volumes by id, one input only
      GECKOCAPBYNAME        For use by end users to cryptocurrency total market caps by id, one input only
      GECKOCHANGE           For use by end users to cryptocurrency % change price, volume, mkt
+     GECKOCHART            For use by end users to cryptocurrency price history for plotting
      GECKOHIST             For use by end users to cryptocurrency historical prices, volumes, mkt
      GECKOATH              For use by end users to cryptocurrency All Time High Prices
      GECKOATL              For use by end users to cryptocurrency All Time Low Prices
@@ -1093,7 +1094,90 @@ async function GECKOCHANGE(ticker,ticker2,type, nb_days){
     return GECKOCHANGE(ticker,ticker2,type, nb_days);
   }
 
-} 
+}
+/** GECKOCHART
+ * Imports array of CoinGecko's cryptocurrency price change, volume change and market cap change into Google spreadsheets.
+ * For example:
+ *
+ *   =GECKOCHART("BTC","LTC","price", 7)
+ *   =GECKOCHART("ETH","USD","volume", 1)
+ *   =GECKOCHART("YFI","EUR","marketcap",365)
+ *           
+ * Feed into sparkline as:
+ * 
+ *   =SPARKLINE(GECKOCHART("BTC","USD","price",7))     
+ * 
+ * @param {ticker}                 the cryptocurrency ticker, only 1 parameter 
+ * @param {ticker2}                the cryptocurrency ticker against which you want the %chaNge, only 1 parameter
+ * @param {price,volume, or marketcap}     the type of change you are looking for
+ * @param {nb_days}                 the number of days you are looking for the price change, 365days=1year price change
+ * @param {str_freq}           frequency of data, possible value: daily 
+ * @param {parseOptions}            an optional fixed cell for automatic refresh of the data
+ * @customfunction
+ *
+ * @return a one-dimensional array containing the price/volume/cap to be fed into sparkline
+ **/
+async function GECKOCHART(ticker,ticker2,type, nb_days,str_freq="daily"){
+  Utilities.sleep(Math.random() * 100)
+  ticker=ticker.toUpperCase()
+  ticker2=ticker2.toLowerCase()
+  type=type.toLowerCase()
+  nb_days=nb_days.toString()
+  id_cache=ticker+ticker2+type+nb_days+'chart'
+
+  pro_path="api"
+  pro_path_key=""
+  if (cg_pro_api_key != "") {
+    pro_path="pro-api"
+    pro_path_key="&x_cg_pro_api_key="+cg_pro_api_key
+  }
+  
+  // Gets a cache that is common to all users of the script.
+  var cache = CacheService.getScriptCache();
+  var cached = cache.get(id_cache);
+  if (cached != null) {
+    return Number(cached);
+  }
+  try{
+    url="https://"+ pro_path +".coingecko.com/api/v3/search?locale=fr&img_path_only=1"+pro_path_key;
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    for (var i=0;i<parsedJSON.coins.length;i++) {
+      if (parsedJSON.coins[i].symbol==ticker)
+      {
+        id_coin=parsedJSON.coins[i].id.toString();
+        break;
+      }
+    }
+    
+    url="https://"+ pro_path +".coingecko.com/api/v3/coins/"+id_coin+"/market_chart?vs_currency="+ticker2+"&days="+nb_days+"&interval="+str_freq+pro_path_key;
+    
+    var res = await UrlFetchApp.fetch(url);
+    var content = res.getContentText();
+    var parsedJSON = JSON.parse(content);
+    
+    if (type=="price")
+    { vol_gecko=parsedJSON.prices.map(function(tuple){return tuple[1];})}
+    else if (type=="volume")
+    { vol_gecko=parsedJSON.total_volumes.map(function(tuple){return tuple[1];})}
+    else if (type=="marketcap")
+    { vol_gecko=parsedJSON.market_caps.map(function(tuple){return tuple[1];})}
+    else 
+    { vol_gecko="Wrong parameter, either price, volume or marketcap";}
+    
+    if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
+      cache.put(id_cache, vol_gecko,expirationInSeconds);
+    return (vol_gecko);
+  }
+  
+  catch(err){
+    return GECKOCHART(ticker,ticker2,type, nb_days);
+  }
+
+}
 /** GECKOLOGO
  * Imports CoinGecko's cryptocurrency Logos into Google spreadsheets. 
  * For example:
