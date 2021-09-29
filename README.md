@@ -62,17 +62,17 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ### GECKO PRICE CHANGE decimal form
 ![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochangeprice.gif)
 
-##### EXAMPLE    =GECKOCHANGE("BTC", "PRICE",1,"$A$1")
+##### EXAMPLE    =GECKOCHANGE("BTC","USD","PRICE",1,"$A$1")
 
 ### GECKO VOLUME CHANGE decimal form
 ![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochangevolume.gif)
 
-##### EXAMPLE    =GECKOCHANGE("BTC", "VOLUME",365,"$A$1")
+##### EXAMPLE    =GECKOCHANGE("BTC","USD","VOLUME",365,"$A$1")
 
 ### GECKO MARKET CAP CHANGE, decimal form
 ![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochangemarketcap.gif)
 
-##### EXAMPLE    =GECKOCHANGE("BTC", "MARKETCAP",365,"$A$1")
+##### EXAMPLE    =GECKOCHANGE("BTC","USD","MARKETCAP",365,"$A$1")
 
 
 ######
