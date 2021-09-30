@@ -49,7 +49,7 @@
   Changelog:
   
   2.0.4  May 31st Added functionality COINGECKO PRIVATE KEY
-  2.0.5  Sept 30th Improved code description + uploaded new Coingecko ticker IDs
+  2.0.5  Sept 30th Improved code description + uploaded new Coingecko ticker IDs + added OnlyCurrentDoc Google macro security
  *====================================================================================================================================*/
 //CACHING TIME  
 //Expiration time for caching values, by default caching data last 10min=600sec. This value is a const and can be changed to your needs.
