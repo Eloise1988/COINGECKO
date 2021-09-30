@@ -6,10 +6,11 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
 
-![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOPRICEUSD.gif)
+![CoingeckoPrice](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckoprice_array.gif)
 
 ###### =GECKOPRICE(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOPRICE("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKOPRICE(A1:A10)
 
 
 ######
@@ -17,10 +18,11 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ## GECKOVOLUME
 ### Imports CoinGecko's cryptocurrency volumes into Google spreadsheets. 
 
-![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOVOLUME.gif)
+![GeckoVolumeEur](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckoVOLUME_array_EUR.gif)
 
 ###### =GECKOVOLUME(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOVOLUME("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKOVOLUME(A1:A10, "EUR")
 
 
 ######
@@ -32,26 +34,42 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 ###### =GECKOCAP(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOCAP("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKOCAP(A1:A10, "EUR")
 
 
 ######
 ## GECKOPRICEBYNAME
-### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. the id_coin of cryptocurrency ticker is found in web address of Coingecko (https://www.coingecko.com/en/coins/bitcoin/usd)
+### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. The Id of cryptocurrency ticker can be found in the following coingecko web page  (https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1)
 
-![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOPRICEBYNAME.gif)
+![GECKOPRICEBYNAME](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOPRICEBYNAME.gif)
 
 ###### =GECKOPRICEBYNAME(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOPRICEBYNAME("bitcoinV", "USD","$A$1")
 
 ######
 
-## GECKOATH
-### Imports CoinGecko's cryptocurrency All Time High Price into Google spreadsheets. 
+## GECKOATH GECKOATL
+### Imports CoinGecko's cryptocurrency All Time High AND Low Prices into Google spreadsheets. 
 
-![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOATH.gif)
+![GECKOATHL](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckoathatl_array.gif)
 
 ###### =GECKOATH(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOATH("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKOATH(A1:A10, "EUR")
+
+###### =GECKOATL(ticker,currency, refresh_cell) 
+##### EXAMPLE    =GECKOATL("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKOATL(A1:A10, "EUR")
+
+######
+## GECKO24HPRICECHANGE
+### Imports CoinGecko's 24h Price % change into Google spreadsheets. 
+
+![GECKOATH](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/gecko24hpricechange_array.gif)
+
+###### =GECKOATH(ticker,currency, refresh_cell) 
+##### EXAMPLE    =GECKO24HPRICECHANGE("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKO24HPRICECHANGE(A1:A10, "EUR")
 
 ######
 ######
@@ -60,19 +78,24 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ###### =GECKOCHANGE(ticker,type, nb_days, refresh_cell) 
 
 ### GECKO PRICE CHANGE decimal form
-![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochangeprice.gif)
+![GECKOCHANGEPRICE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCHANGE2.gif)
 
 ##### EXAMPLE    =GECKOCHANGE("BTC","USD","PRICE",1,"$A$1")
 
 ### GECKO VOLUME CHANGE decimal form
-![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochangevolume.gif)
+![GECKOCHANGEVOL](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCHANGE2VOLUME.gif)
 
 ##### EXAMPLE    =GECKOCHANGE("BTC","USD","VOLUME",365,"$A$1")
 
 ### GECKO MARKET CAP CHANGE, decimal form
-![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochangemarketcap.gif)
+![GECKOCHANGECAP](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCHANGE2MKTCAP.gif)
 
 ##### EXAMPLE    =GECKOCHANGE("BTC","USD","MARKETCAP",365,"$A$1")
+
+### FORMULA REFRESHING & MAKING SURE NOT TO TRIGGER GOOGLE LIMITS
+![TickerBox](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/TickerBoxRefresh.gif)
+
+##### EXAMPLE    =if($C$10=true, GECKOPRICE(B12:B32,"usd",$B$10),"Tick Box to Refresh")
 
 
 ######
