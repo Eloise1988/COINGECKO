@@ -16,25 +16,25 @@
   ------------------------------------------------------------------------------------------------------------------------------------
   A library for importing CoinGecko's price, volume & market cap feeds into Google spreadsheets. Functions include:
 
-     GECKOPRICE            For use by end users to cryptocurrency prices 
-     GECKOVOLUME           For use by end users to cryptocurrency 24h volumes
-     GECKOCAP              For use by end users to cryptocurrency total market caps
-     GECKOCAPDILUTED       For use by end users to cryptocurrency total diluted market caps
-     GECKOPRICEBYNAME      For use by end users to cryptocurrency prices by id, one input only
-     GECKOVOLUMEBYNAME     For use by end users to cryptocurrency 24h volumes by id, one input only
-     GECKOCAPBYNAME        For use by end users to cryptocurrency total market caps by id, one input only
-     GECKOCHANGE           For use by end users to cryptocurrency % change price, volume, mkt
-     GECKOCHANGEBYNAME     For use by end users to cryptocurrency % change price, volume, mkt using the ticker's id
-     GECKOCHART            For use by end users to cryptocurrency price history for plotting
-     GECKOHIST             For use by end users to cryptocurrency historical prices, volumes, mkt
-     GECKOATH              For use by end users to cryptocurrency All Time High Prices
-     GECKOATL              For use by end users to cryptocurrency All Time Low Prices
-     GECKO24HIGH           For use by end users to cryptocurrency 24H Low Price
-     GECKO24LOW            For use by end users to cryptocurrency 24H High Price
+     GECKOPRICE            For use by end users to get cryptocurrency prices 
+     GECKOVOLUME           For use by end users to get cryptocurrency 24h volumes
+     GECKOCAP              For use by end users to get cryptocurrency total market caps
+     GECKOCAPDILUTED       For use by end users to get cryptocurrency total diluted market caps
+     GECKOPRICEBYNAME      For use by end users to get cryptocurrency prices by id, one input only
+     GECKOVOLUMEBYNAME     For use by end users to get cryptocurrency 24h volumes by id, one input only
+     GECKOCAPBYNAME        For use by end users to get cryptocurrency total market caps by id, one input only
+     GECKOCHANGE           For use by end users to get cryptocurrency % change price, volume, mkt
+     GECKOCHANGEBYNAME     For use by end users to get cryptocurrency % change price, volume, mkt using the ticker's id
+     GECKOCHART            For use by end users to get cryptocurrency price history for plotting
+     GECKOHIST             For use by end users to get cryptocurrency historical prices, volumes, mkt
+     GECKOATH              For use by end users to get cryptocurrency All Time High Prices
+     GECKOATL              For use by end users to get cryptocurrency All Time Low Prices
+     GECKO24HIGH           For use by end users to get cryptocurrency 24H Low Price
+     GECKO24LOW            For use by end users to get cryptocurrency 24H High Price
      GECKO24HPRICECHANGE   For use by end users to get cryptocurrency 24h % Price change 
-     GECKO_ID_DATA         For use by end users to cryptocurrency data end points
-     GECKOLOGO             For use by end users to cryptocurrency Logos by ticker
-     GECKOLOGOBYNAME       For use by end users to cryptocurrency Logos by id
+     GECKO_ID_DATA         For use by end users to get cryptocurrency data end points
+     GECKOLOGO             For use by end users to get cryptocurrency Logos by ticker
+     GECKOLOGOBYNAME       For use by end users to get cryptocurrency Logos by id
      COINGECKO_ID          For use by end users to get the coin's id in Coingecko
      GECKO_RANK            For use by end users to get the coin's ranking by market cap
 
