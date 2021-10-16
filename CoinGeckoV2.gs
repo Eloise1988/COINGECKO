@@ -1479,7 +1479,7 @@ async function GECKOVOLUMEBYNAME(id_coin,currency){
  * Imports CoinGecko's id_coin of cryptocurrency ticker, which can be found in web address of Coingecko (https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1).
  * For example:
  *
- *   =GCOINGECKO_ID("BTC")
+ *   =COINGECKO_ID("BTC")
  *               
  * 
  * @param {ticker}                 the ticker of cryptocurrency ticker, only 1 parameter 
