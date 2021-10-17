@@ -5,7 +5,7 @@
 /*====================================================================================================================================*
   CoinGecko Google Sheet Feed by Eloise1988
   ====================================================================================================================================
-  Version:      2.0.5
+  Version:      2.0.6
   Project Page: https://github.com/Eloise1988/COINGECKO
   Copyright:    (c) 2021 by Eloise1988
                 
@@ -50,7 +50,8 @@
   
   2.0.4  May 31st Added functionality COINGECKO PRIVATE KEY
   2.0.5  Sept 30th Improved code description + uploaded new Coingecko ticker IDs + added OnlyCurrentDoc Google macro security
- *====================================================================================================================================*/
+  2.0.6  GECKOHIST Function that gets cryptocurrency historical array of prices, volumes, mkt  *====================================================================================================================================*/
+
 //CACHING TIME  
 //Expiration time for caching values, by default caching data last 10min=600sec. This value is a const and can be changed to your needs.
 const expirationInSeconds=600;
@@ -775,99 +776,108 @@ async function GECKORANK(ticker_array,currency){
   
 }  
 /** GECKOHIST
- * Imports CoinGecko's cryptocurrency price change, volume change and market cap change into Google spreadsheets. 
+ * Imports CoinGecko's cryptocurrency historical prices, volumes and market caps. 
  * For example:
  *
- *   =GECKOHIST("BTC","LTC","price", "31-12-2020")
- *   =GECKOHIST("ethereum","USD","volume", "01-01-2021",false)
- *   =GECKOHIST("YFI","EUR","marketcap","06-06-2020",true)
+ *   =GECKOHIST("ethereum","usd","price",datevalue("12-31-2020"),datevalue("08-31-2020"))
+ *   =GECKOHIST("btc","usd","volume",datevalue(a1),datevalue(a2))
+ *   =GECKOHIST("btc","eth","marketcap",datevalue(a1),datevalue(a2))
  *               
- * 
  * @param {ticker}                 the cryptocurrency ticker, only 1 parameter 
- * @param {ticker2}                the cryptocurrency ticker against which you want the %chage, only 1 parameter
- * @param {price,volume, or marketcap}   the type of change you are looking for
- * @param {date_ddmmyyy}           the date format dd-mm-yyy get open of the specified date, for close dd-mm-yyy+ 1day
- * @param {by_ticker boolean}       an optional true (data by ticker) false (data by id_name) 
+ * @param {defaultVersusCoin}      usd, btc, eth etc..
+ * @param {type}                   price,volume, or marketcap
+ * @param {startdate_mmddyyy}      the start date in datevalue format, depending on sheet timezone dd-mm-yyy or mm-dd-yyyy
+ * @param {enddate_mmddyyy}        the end date in datevalue format, depending on sheet timezone dd-mm-yyy or mm-dd-yyyy
  * @param {parseOptions}           an optional fixed cell for automatic refresh of the data
  * @customfunction
  *
- * @return a one-dimensional array containing the historical open price of BTC -LTC on the 31-12-2020
+ * @return a 2-dimensional array containing the historical prices, volumes, market-caps
+ * 
  **/
-async function GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true){
+
+async function GECKOHIST(ticker,defaultVersusCoin,type, startdate_mmddyyy,enddate_mmddyyy){
   Utilities.sleep(Math.random() * 100)
-  ticker=ticker.toUpperCase()
-  ticker2=ticker2.toLowerCase()
-  type=type.toLowerCase()
-  date_ddmmyyy=date_ddmmyyy.toString()
-  id_cache=ticker+ticker2+type+date_ddmmyyy+'hist'
+  pairExtractRegex = /(.*)[/](.*)/, coinSet = new Set(), versusCoinSet = new Set(), pairList = [];
+  
+  defaultValueForMissingData = null;
+  if(typeof defaultVersusCoin === 'undefined') defaultVersusCoin = "usd";
+  defaultVersusCoin=defaultVersusCoin.toLowerCase();
+  if(ticker.map) ticker.map(pairExtract);
+  else pairExtract(ticker);
 
-  pro_path="api"
-  pro_path_key=""
-  if (cg_pro_api_key != "") {
-    pro_path="pro-api"
-    pro_path_key="&x_cg_pro_api_key="+cg_pro_api_key
-  }
-
-  if(by_ticker==true){
-    
-    try{
-    
-    url="https://"+ pro_path +".coingecko.com/api/v3/search?locale=fr&img_path_only=1"+pro_path_key;
-    
-    var res = await UrlFetchApp.fetch(url);
-    var content = res.getContentText();
-    var parsedJSON = JSON.parse(content);
-    
-    for (var i=0;i<parsedJSON.coins.length;i++) {
-      if (parsedJSON.coins[i].symbol==ticker)
-      {
-        id_coin=parsedJSON.coins[i].id.toString();
-        break;
+  function pairExtract(toExtract) {
+      toExtract = toExtract.toString().toLowerCase();
+      let match, pair;
+      if(match = toExtract.match(pairExtractRegex)) {
+        pairList.push(pair = [CoinList[match[1]] || match[1], match[2]]);
+        coinSet.add(pair[0]);
+        versusCoinSet.add(pair[1]);
       }
-    }}
-    catch(err){
-      return GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true);
-  }
-  }
-  else{
-    id_coin=ticker.toLowerCase()
-  }
+      else {
+        pairList.push(pair = [CoinList[toExtract] || toExtract, defaultVersusCoin]);
+        coinSet.add(pair[0]);
+        versusCoinSet.add(pair[1]);
+      }
+    }
+
+  let coinList = [...coinSet].join("%2C");
+  let versusCoinList = [...versusCoinSet].join("%2C");
+  id_cache=getBase64EncodedMD5(coinList+versusCoinList+type+startdate_mmddyyy.toString()+enddate_mmddyyy.toString()+'history');
   
-  
-  // Gets a cache that is common to all users of the script.
   var cache = CacheService.getScriptCache();
   var cached = cache.get(id_cache);
   if (cached != null) {
-    return Number(cached);
+    result=JSON.parse(cached);
+    return result; 
   }
-  try{
-    
-    
-    url="https://"+ pro_path +".coingecko.com/api/v3/coins/"+id_coin+"/history?date="+date_ddmmyyy+"&localization=false"+pro_path_key;
-    
-    var res = await UrlFetchApp.fetch(url);
-    var content = res.getContentText();
-    var parsedJSON = JSON.parse(content);
-    
-    
-    if (type=="price"){
-      vol_gecko=parseFloat(parsedJSON.market_data.current_price[ticker2]).toFixed(4);}
-    else if (type=="volume")
-    { vol_gecko=parseFloat(parsedJSON.market_data.total_volume[ticker2]).toFixed(4);}
-    else if (type=="marketcap")
-    { vol_gecko=parseFloat(parsedJSON.market_data.market_cap[ticker2]).toFixed(4);}
-    else 
-    { vol_gecko="Wrong parameter, either price, volume or marketcap";}
-    
-    if (vol_gecko!="Wrong parameter, either price, volume or marketcap")
-      cache.put(id_cache, Number(vol_gecko),expirationInSeconds);
-    return Number(vol_gecko);
-  }
+ 
+    pro_path="api"
+    pro_path_key=""
+    if (cg_pro_api_key != "") {
+      pro_path="pro-api"
+      pro_path_key="&x_cg_pro_api_key="+cg_pro_api_key
+    }
+
+    url= "https://"+ pro_path +".coingecko.com/api/v3/coins/" + coinList + "/market_chart/range?vs_currency=" + versusCoinList+'&from='+(startdate_mmddyyy-25569)*86400+'&to='+(enddate_mmddyyy-25569)*86400+pro_path_key;
   
-  catch(err){
-    return GECKOHIST(ticker,ticker2,type, date_ddmmyyy,by_ticker=true);
-  }
+   var res = await UrlFetchApp.fetch(url);
+   var content = res.getContentText();
+   var parsedJSON = JSON.parse(content);
+   
+    var data=[]
+    if (type=="price"){
+      for (var i = parsedJSON['prices'].length - 1; i >= 0; i--) {
+        data.push([toDateNum(parsedJSON['prices'][i][0]),parsedJSON['prices'][i][1]]);
+        };}
+    else if (type=="volume")
+    { for (var i = parsedJSON['total_volumes'].length - 1; i >= 0; i--) {
+        data.push([toDateNum(parsedJSON['total_volumes'][i][0]),parsedJSON['total_volumes'][i][1]]);
+        };}
+    else if (type=="marketcap")
+    { for (var i = parsedJSON['market_caps'].length - 1; i >= 0; i--) {
+        data.push([toDateNum(parsedJSON['market_caps'][i][0]),parsedJSON['market_caps'][i][1]]);
+        };}
+    else 
+    { data="Error";}
+    
+    if (data!="Error")
+      cache.put(id_cache, JSON.stringify(data),expirationInSeconds);
+    return data;
+  
   }  
+
+function toDateNum(string) {
+  //convert unix timestamp to milliseconds rather than seconds
+  var d = new Date(string);
+
+  //get timezone of spreadsheet
+  var tz = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone();
+
+  //format date to readable format
+  var date = Utilities.formatDate(d, tz, 'MM-dd-yyyy hh:mm:ss');
+
+  return date;
+}
 /** GECKOCHANGEBYNAME
  * Imports CoinGecko's cryptocurrency price change, volume change and market cap change into Google spreadsheets. 
  * For example:
