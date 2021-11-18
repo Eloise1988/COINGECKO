@@ -5,7 +5,7 @@
 /*====================================================================================================================================*
   CoinGecko Google Sheet Feed by Eloise1988
   ====================================================================================================================================
-  Version:      2.0.8
+  Version:      2.0.9
   Project Page: https://github.com/Eloise1988/COINGECKO
   Copyright:    (c) 2021 by Eloise1988
                 
@@ -24,6 +24,7 @@
      GECKOVOLUMEBYNAME     For use by end users to get cryptocurrency 24h volumes by id, one input only
      GECKOCAPBYNAME        For use by end users to get cryptocurrency total market caps by id, one input only
      GECKOCAPTOT           For use by end users to get the total market cap of all cryptocurrencies in usd, eur etc....
+     GECKOCAPDOMINANCE     For use by end users to get the % market cap dominance of  cryptocurrencies
      GECKOCHANGE           For use by end users to get cryptocurrency % change price, volume, mkt
      GECKOCHANGEBYNAME     For use by end users to get cryptocurrency % change price, volume, mkt using the ticker's id
      GECKOCHART            For use by end users to get cryptocurrency price history for plotting
@@ -55,6 +56,7 @@
   2.0.6  GECKOHIST Function that gets cryptocurrency historical array of prices, volumes, mkt  
   2.0.7  Restored old version of GECKOHIST Function into GECKOHISTBYDAY 
   2.0.8  GECKOCAPTOT function that gets the total market cap of all cryptocurrencies
+  2.0.9  GECKOCAPDOMINANCE imports the % market cap dominance of  cryptocurrencies
   *====================================================================================================================================*/
 
 //CACHING TIME  
@@ -417,6 +419,74 @@ async function GECKOCAPTOT(currency){
     return GECKOCAPTOT(currency);
   }
   
+}  
+/** GECKOCAPDOMINANCE
+ * Imports the % market cap dominance of  cryptocurrencies into Google spreadsheets. The feed can be an array of cryptocurrencies or a single one.
+ * By default, data gets the amount in $
+ * For example:
+ *
+ *   =GECKOCAPDOMINANCE("USD")
+ *   =GECKOCAPDOMINANCE(B16:B35)
+ *               
+ * 
+ * @param {cryptocurrency}          "btc", it can also be a list of currencies
+ * @customfunction
+ *
+ * @returns an array of the % dominance by cryptocurrency
+ **/ 
+async function GECKOCAPDOMINANCE(ticker_array){
+   Utilities.sleep(Math.random() * 100)
+  try{
+    let defaultVersusCoin = "usd", coinSet = new Set(), pairExtractRegex = /(.*)[/](.*)/, pairList = [];
+    
+    defaultValueForMissingData = null;
+
+    if(ticker_array.map) ticker_array.map(pairExtract);
+    else pairExtract(ticker_array);
+    
+    let coinList = [...coinSet].join("%2C");
+    id_cache=getBase64EncodedMD5(coinList+'dominancemktcap');
+    var cache = CacheService.getScriptCache();
+    var cached = cache.get(id_cache);
+    if (cached != null) {
+      result=cached.split(',');
+      return result.map(function(n) { return n && ("" || Number(n))}); 
+    }
+    
+    pro_path="api"
+    pro_path_key=""
+    if (cg_pro_api_key != "") {
+      pro_path="pro-api"
+      pro_path_key="&x_cg_pro_api_key="+cg_pro_api_key
+    }
+    var total_mktcaps = JSON.parse(UrlFetchApp.fetch("https://"+ pro_path +".coingecko.com/api/v3/global" + pro_path_key).getContentText());
+    var total_mktcap=total_mktcaps['data']['total_market_cap']['usd'];
+    let tickerList = JSON.parse(UrlFetchApp.fetch("https://"+ pro_path +".coingecko.com/api/v3/coins/markets?vs_currency=" + defaultVersusCoin + "&ids=" + coinList+pro_path_key).getContentText());
+    var dict = {}; 
+    for (var i=0;i<tickerList.length;i++) {
+        dict[tickerList[i].id]=tickerList[i].market_cap/total_mktcap;
+        };
+    cache.put(id_cache,pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || ""),expirationInSeconds);   
+    
+    return pairList.map((pair) => pair[0] && (dict[pair[0]] && (dict[pair[0]] || "") || (defaultValueForMissingData !== null ? defaultValueForMissingData : "")) || "");  
+    
+    function pairExtract(toExtract) {
+      toExtract = toExtract.toString().toLowerCase();
+      let match, pair;
+      if(match = toExtract.match(pairExtractRegex)) {
+        pairList.push(pair = [CoinList[match[1]] || match[1], match[2]]);
+        coinSet.add(pair[0]);
+      }
+      else {
+        pairList.push(pair = [CoinList[toExtract] || toExtract, defaultVersusCoin]);
+        coinSet.add(pair[0]);
+      }
+    }
+  }
+  catch(err){
+    //return err
+    return GECKOCAPDOMINANCE(ticker_array);
+  }
 }  
 /** GECKO24HPRICECHANGE
  * Imports cryptocurrencies 24H percent price change into Google spreadsheets. The feed is a dimensional array.
