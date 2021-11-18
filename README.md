@@ -104,7 +104,7 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ##### EXAMPLE    =GECKOCAPTOT()
 
 ### GECKOCAPDOMINANCE, gets the % market cap dominance by cryptocurrencies
-![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCADOMINANCE.gif)
+![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCAPDOMINANCE.gif)
 
 ##### EXAMPLE    =GECKOCAPDOMINANCE("BTC")
 
