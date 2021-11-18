@@ -92,6 +92,22 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 ##### EXAMPLE    =GECKOCHANGE("BTC","USD","MARKETCAP",365,"$A$1")
 
+### GECKOHIST, decimal form, gets the list of historical prices, volumes, market cap
+![GECKOHIST](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOHIST.gif)
+
+##### EXAMPLE    =GECKOHIST("ethereum","usd","price",datevalue("12-31-2020"),datevalue("08-31-2020"))
+Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or datevalue('dd-mm-yyyy')
+
+### GECKOCAPTOT, gets the current total market cap of cryptocurrencies
+![GECKOCAPTOT](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCAPTOT.gif)
+
+##### EXAMPLE    =GECKOCAPTOT()
+
+### GECKOCAPDOMINANCE, gets the % market cap dominance by cryptocurrencies
+![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCADOMINANCE.gif)
+
+##### EXAMPLE    =GECKOCAPDOMINANCE("BTC")
+
 ### FORMULA REFRESHING & MAKING SURE NOT TO TRIGGER GOOGLE LIMITS
 ![TickerBox](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/TickerBoxRefresh.gif)
 
