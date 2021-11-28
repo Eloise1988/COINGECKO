@@ -109,16 +109,16 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ##### EXAMPLE    =GECKOCAPDOMINANCE("BTC")
 
 ### GECKOSUPPLY gets the coin's circulating, max & total supply
-![GECKOSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY.gif)
 ### Imports the circulating supply 
+![GECKOSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY.gif)
 ##### EXAMPLE    =GECKOSUPPLY("ETH")
 
-![GECKOMAXSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY_MAXSUPPLY.gif)
 ### Imports the maximum supply 
+![GECKOMAXSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY_MAXSUPPLY.gif)
 ##### EXAMPLE    =GECKOSUPPLY("BTC","MAX_SUPPLY")
 
-![GECKOTOTALSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY_TOTALSUPPLY.gif)
 ### Imports the total supply 
+![GECKOTOTALSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY_TOTALSUPPLY.gif)
 ##### EXAMPLE    =GECKOSUPPLY("BTC","TOTAL_SUPPLY")
 
 ### FORMULA REFRESHING & MAKING SURE NOT TO TRIGGER GOOGLE LIMITS
