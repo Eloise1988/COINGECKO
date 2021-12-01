@@ -2,6 +2,14 @@
 CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 
+######
+## GOOGLE SHEET EXAMPLE
+[Link to Google Sheets!](https://docs.google.com/spreadsheets/d/1-QNPo7-gq3vLMoxrCWg_DwTA5dfD9b-Lv-tRVTqo1RE/edit?usp=sharing)
+
+
+######
+## GOOGLE SHEET SET-UP
+[Link to Set-up!](https://medium.com/the-cryptocurious/google-sheet-open-source-cryptotools-set-up-9420e3940a8a)
 
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
@@ -127,7 +135,4 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ##### EXAMPLE    =if($C$10=true, GECKOPRICE(B12:B32,"usd",$B$10),"Tick Box to Refresh")
 
 
-######
-## GOOGLE SHEET EXAMPLE
-[Link to Google Sheets!](https://docs.google.com/spreadsheets/d/1QODede4loYFnd9ig_f4vRiO4J4uptxn8zIx3qRsLDeA/edit?usp=sharing)
 
