@@ -3,13 +3,11 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 
 ######
-## GOOGLE SHEET EXAMPLE & MEDIUM
-[Link to Google Sheets!](https://docs.google.com/spreadsheets/d/1-QNPo7-gq3vLMoxrCWg_DwTA5dfD9b-Lv-tRVTqo1RE/edit?usp=sharing)   [Link to the Medium Publication](https://medium.com/the-cryptocurious/coingecko-prices-volumes-market-caps-in-google-sheets-and-excel-a1a3ee201cb8)
-
-
-######
-## GOOGLE SHEET SET-UP
-[Link to Set-up](https://medium.com/the-cryptocurious/google-sheet-open-source-cryptotools-set-up-9420e3940a8a)
+## PUBLICATION LINKS
+[Link to Google Sheets!](https://docs.google.com/spreadsheets/d/1-QNPo7-gq3vLMoxrCWg_DwTA5dfD9b-Lv-tRVTqo1RE/edit?usp=sharing)   
+[Link to Youtube video made from a community member](https://docs.google.com/spreadsheets/d/1-QNPo7-gq3vLMoxrCWg_DwTA5dfD9b-Lv-tRVTqo1RE/edit?usp=sharing) 
+[Link to the Medium Publication](https://medium.com/the-cryptocurious/coingecko-prices-volumes-market-caps-in-google-sheets-and-excel-a1a3ee201cb8)
+[Link to GOOGLE SHEET SET-UP Set-up](https://medium.com/the-cryptocurious/google-sheet-open-source-cryptotools-set-up-9420e3940a8a)
 
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
