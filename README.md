@@ -10,6 +10,11 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ###### [Link to the Medium Publication](https://medium.com/the-cryptocurious/coingecko-prices-volumes-market-caps-in-google-sheets-and-excel-a1a3ee201cb8)
 ###### [Link to Google Sheet's Set-up](https://medium.com/the-cryptocurious/google-sheet-open-source-cryptotools-set-up-9420e3940a8a)
 
+## FUNCTIONS
+|  [GECKOPRICE](#geckoprice) 	|  [GECKOVOLUME](#geckovolume) 	|  [GECKOCAP](#geckocap) 	|  [GECKOPRICEBYNAME](#geckopricebyname)
+|  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
+|  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	
+
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
 
@@ -99,23 +104,26 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 ##### EXAMPLE    =GECKOCHANGE("BTC","USD","MARKETCAP",365,"$A$1")
 
-### GECKOHIST, decimal form, gets the list of historical prices, volumes, market cap
+### GECKOHIST
+##### decimal form, gets the list of historical prices, volumes, market cap
 ![GECKOHIST](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOHIST.gif)
 
 ##### EXAMPLE    =GECKOHIST("ethereum","usd","price",datevalue("12-31-2020"),datevalue("08-31-2020"))
 Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or datevalue('dd-mm-yyyy')
 
-### GECKOCAPTOT, gets the current total market cap of cryptocurrencies
+### GECKOCAPTOT 
+##### gets the current total market cap of cryptocurrencies
 ![GECKOCAPTOT](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCAPTOT.gif)
 
 ##### EXAMPLE    =GECKOCAPTOT()
 
-### GECKOCAPDOMINANCE, gets the % market cap dominance by cryptocurrencies
+### GECKOCAPDOMINANCE
+##### gets the % market cap dominance by cryptocurrencies
 ![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCAPDOMINANCE.gif)
 
 ##### EXAMPLE    =GECKOCAPDOMINANCE("BTC")
 
-### GECKOSUPPLY gets the coin's circulating, max & total supply
+### GECKOSUPPLY
 ### Imports the circulating supply 
 ![GECKOSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY.gif)
 ##### EXAMPLE    =GECKOSUPPLY("ETH")
