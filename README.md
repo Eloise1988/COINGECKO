@@ -94,31 +94,31 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 ##### EXAMPLE    =GECKOCHANGE("BTC","USD","PRICE",1,"$A$1")
 
-### GECKO VOLUME CHANGE decimal form
+### GECKO VOLUME CHANGE 
 ![GECKOCHANGEVOL](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCHANGE2VOLUME.gif)
 
 ##### EXAMPLE    =GECKOCHANGE("BTC","USD","VOLUME",365,"$A$1")
 
-### GECKO MARKET CAP CHANGE, decimal form
+### GECKO MARKET CAP CHANGE
 ![GECKOCHANGECAP](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCHANGE2MKTCAP.gif)
 
 ##### EXAMPLE    =GECKOCHANGE("BTC","USD","MARKETCAP",365,"$A$1")
 
 ### GECKOHIST
-##### decimal form, gets the list of historical prices, volumes, market cap
+##### Imports the list of historical prices, volumes, market cap
 ![GECKOHIST](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOHIST.gif)
 
 ##### EXAMPLE    =GECKOHIST("ethereum","usd","price",datevalue("12-31-2020"),datevalue("08-31-2020"))
 Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or datevalue('dd-mm-yyyy')
 
 ### GECKOCAPTOT 
-##### gets the current total market cap of cryptocurrencies
+##### Imports the current total market cap of cryptocurrencies
 ![GECKOCAPTOT](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCAPTOT.gif)
 
 ##### EXAMPLE    =GECKOCAPTOT()
 
 ### GECKOCAPDOMINANCE
-##### gets the % market cap dominance by cryptocurrencies
+##### Imports the % market cap dominance by cryptocurrencies
 ![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOCAPDOMINANCE.gif)
 
 ##### EXAMPLE    =GECKOCAPDOMINANCE("BTC")
@@ -137,7 +137,7 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ##### EXAMPLE    =GECKOSUPPLY("BTC","TOTAL_SUPPLY")
 
 ### GECKORANK
-##### gets the ranking of cryptocurrency by market capitalization ($)
+##### Imports the ranking of cryptocurrencies by market capitalization ($)
 ![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckorank_array.gif)
 
 ##### EXAMPLE    =GECKORANK("BTC")
