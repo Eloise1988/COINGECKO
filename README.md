@@ -13,7 +13,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ## FUNCTIONS
 |  [GECKOPRICE](#geckoprice) 	|  [GECKOVOLUME](#geckovolume) 	|  [GECKOCAP](#geckocap) 	|  [GECKOPRICEBYNAME](#geckopricebyname)
 |  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
-|  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	
+|  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	|  [GECKORANK](#geckorank) 	
 
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
@@ -135,6 +135,12 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ### Imports the total supply 
 ![GECKOTOTALSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY_TOTALSUPPLY.gif)
 ##### EXAMPLE    =GECKOSUPPLY("BTC","TOTAL_SUPPLY")
+
+### GECKORANK
+##### gets the ranking of cryptocurrency by market capitalization ($)
+![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckorank_array.gif)
+
+##### EXAMPLE    =GECKORANK("BTC")
 
 ### FORMULA REFRESHING & MAKING SURE NOT TO TRIGGER GOOGLE LIMITS
 ![TickerBox](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/TickerBoxRefresh.gif)
