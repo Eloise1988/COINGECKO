@@ -14,6 +14,8 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 |  [GECKOPRICE](#geckoprice) 	|  [GECKOVOLUME](#geckovolume) 	|  [GECKOCAP](#geckocap) 	|  [GECKOPRICEBYNAME](#geckopricebyname)
 |  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
 |  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	|  [GECKORANK](#geckorank) 	
+|  [GECKOCAPDILUTED](#geckocaptot) 	|  [GECKOCHART](#geckocapdominance) 	|  [GECKOHISTBYDAY](#geckosupply) 	|  [GECKO24HIGH GECKO24LOW](#geckorank)
+|  [GECKO_ID_DATA](#geckocaptot) 	|  [GECKOLOGO](#geckocapdominance) 	|  [COINGECKO_ID](#geckosupply) 	
 
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
@@ -58,6 +60,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ###### =GECKOPRICEBYNAME(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOPRICEBYNAME("bitcoinV", "USD","$A$1")
 
+##### NB: The functions GECKOVOLUMEBYNAME, GECKOCAPBYNAME, GECKOCHANGEBYNAME, GECKOLOGOBYNAME can be used in a similar way as GECKOPRICEBYNAME
 ######
 
 ## GECKOATH GECKOATL
