@@ -14,7 +14,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 |  [GECKOPRICE](#geckoprice) 	|  [GECKOVOLUME](#geckovolume) 	|  [GECKOCAP](#geckocap) 	|  [GECKOPRICEBYNAME](#geckopricebyname)
 |  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
 |  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	|  [GECKORANK](#geckorank) 	
-|  [GECKOCAPDILUTED](#geckocaptot) 	|  [GECKOCHART](#geckocapdominance) 	|  [GECKOHISTBYDAY](#geckosupply) 	|  [GECKO24HIGH GECKO24LOW](#geckorank)
+|  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckocapdominance) 	|  [GECKOHISTBYDAY](#geckosupply) 	|  [GECKO24HIGH GECKO24LOW](#geckorank)
 |  [GECKO_ID_DATA](#geckocaptot) 	|  [GECKOLOGO](#geckocapdominance) 	|  [COINGECKO_ID](#geckosupply) 	
 
 ## GECKOPRICE
