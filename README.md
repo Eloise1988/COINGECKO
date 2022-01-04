@@ -14,7 +14,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 |  [GECKOPRICE](#geckoprice) 	|  [GECKOVOLUME](#geckovolume) 	|  [GECKOCAP](#geckocap) 	|  [GECKOPRICEBYNAME](#geckopricebyname)
 |  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
 |  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	|  [GECKORANK](#geckorank) 	
-|  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckocapdominance) 	|  [GECKOHISTBYDAY](#geckosupply) 	|  [GECKO24HIGH GECKO24LOW](#geckorank)
+|  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckocapdominance) 	|  [GECKOHISTBYDAY](#geckosupply) 	|  [GECKO24HIGH GECKO24LOW](#gecko24high-gecko24low)
 |  [GECKO_ID_DATA](#geckocaptot) 	|  [GECKOLOGO](#geckocapdominance) 	|  [COINGECKO_ID](#geckosupply) 	
 
 ## GECKOPRICE
@@ -66,7 +66,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ## GECKOATH GECKOATL
 ### Imports CoinGecko's cryptocurrency All Time High AND Low Prices into Google spreadsheets. 
 
-![GECKOATHL](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckoathatl_array.gif)
+![GECKOATHL](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOATHATL2.gif)
 
 ###### =GECKOATH(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOATH("BTC", "USD","$A$1")
@@ -75,6 +75,19 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ###### =GECKOATL(ticker,currency, refresh_cell) 
 ##### EXAMPLE    =GECKOATL("BTC", "USD","$A$1")
 ##### EXAMPLE    =GECKOATL(A1:A10, "EUR")
+
+## GECKO24HIGH GECKO24LOW
+### Imports CoinGecko's cryptocurrency 24H High and Low Prices into Google spreadsheets. 
+
+![GECKO24HL](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckoathatl_array.gif)
+
+###### =GECKO24H(ticker,currency, refresh_cell) 
+##### EXAMPLE    =GECKO24H("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKO24H(A1:A10, "EUR")
+
+###### =GECKO24L(ticker,currency, refresh_cell) 
+##### EXAMPLE    =GECKO24L("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKO24L(A1:A10, "EUR")
 
 ######
 ## GECKO24HPRICECHANGE
