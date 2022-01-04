@@ -126,6 +126,15 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 
 ##### EXAMPLE    =GECKOCAPDOMINANCE("BTC")
 
+## GECKOCAPDILUTED
+### Imports CoinGecko's cryptocurrency market capitalization diluted into Google spreadsheets. 
+
+![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckocapdiluted.gif)
+
+###### =GECKOCAPDILUTED(ticker,currency, refresh_cell) 
+##### EXAMPLE    =GECKOCAPDILUTED("BTC", "USD","$A$1")
+##### EXAMPLE    =GECKOCAPDILUTED(A1:A10, "EUR")
+
 ### GECKOSUPPLY
 ### Imports the circulating supply 
 ![GECKOSUPPLY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOSUPPLY.gif)
@@ -144,15 +153,6 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckorank_array.gif)
 
 ##### EXAMPLE    =GECKORANK("BTC")
-
-## GECKOCAPDILUTED
-### Imports CoinGecko's cryptocurrency market diluted capitalization into Google spreadsheets. 
-
-![alt text](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckocapdiluted.gif)
-
-###### =GECKOCAPDILUTED(ticker,currency, refresh_cell) 
-##### EXAMPLE    =GECKOCAPDILUTED("BTC", "USD","$A$1")
-##### EXAMPLE    =GECKOCAPDILUTED(A1:A10, "EUR")
 
 ### FORMULA REFRESHING & MAKING SURE NOT TO TRIGGER GOOGLE LIMITS
 ![TickerBox](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/TickerBoxRefresh.gif)
