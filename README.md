@@ -14,7 +14,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 |  [GECKOPRICE](#geckoprice) 	|  [GECKOVOLUME](#geckovolume) 	|  [GECKOCAP](#geckocap) 	|  [GECKOPRICEBYNAME](#geckopricebyname)
 |  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
 |  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	|  [GECKORANK](#geckorank) 	
-|  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckocapdominance) 	|  [GECKOHISTBYDAY](#geckosupply) 	|  [GECKO24HIGH GECKO24LOW](#gecko24high-gecko24low)
+|  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckocapdominance) 	|  [GECKOHISTBYDAY](#geckohistbyday) 	|  [GECKO24HIGH GECKO24LOW](#gecko24high-gecko24low)
 |  [GECKO_ID_DATA](#geckocaptot) 	|  [GECKOLOGO](#geckocapdominance) 	|  [COINGECKO_ID](#geckosupply) 	
 
 ## GECKOPRICE
@@ -126,6 +126,13 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 ##### EXAMPLE    =GECKOHIST("ethereum","usd","price",datevalue("12-31-2020"),datevalue("08-31-2020"))
 Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or datevalue('dd-mm-yyyy')
+
+### GECKOHISTBYDAY
+##### Imports the historical prices, volumes, market cap by date (european format dd-mm-yyyy) 
+![GECKOHISTBYDAY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckohistbyday2.png)
+
+##### EXAMPLE    =GECKOHISTBYDAY("btc","usd","price","01-01-2022")
+
 
 ### GECKOCAPTOT 
 ##### Imports the current total market cap of cryptocurrencies
