@@ -14,7 +14,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 |  [GECKOPRICE](#geckoprice) 	|  [GECKOVOLUME](#geckovolume) 	|  [GECKOCAP](#geckocap) 	|  [GECKOPRICEBYNAME](#geckopricebyname)
 |  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
 |  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	|  [GECKORANK](#geckorank) 	
-|  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckocapdominance) 	|  [GECKOHISTBYDAY](#geckohistbyday) 	|  [GECKO24HIGH GECKO24LOW](#gecko24high-gecko24low)
+|  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckochart) 	|  [GECKOHISTBYDAY](#geckohistbyday) 	|  [GECKO24HIGH GECKO24LOW](#gecko24high-gecko24low)
 |  [GECKO_ID_DATA](#geckocaptot) 	|  [GECKOLOGO](#geckocapdominance) 	|  [COINGECKO_ID](#geckosupply) 	
 
 ## GECKOPRICE
@@ -132,6 +132,23 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ![GECKOHISTBYDAY](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckohistbyday2.png)
 
 ##### EXAMPLE    =GECKOHISTBYDAY("btc","usd","price","01-01-2022")
+
+### GECKOCHART
+##### Imports the chart sparkline for historical prices, volumes, market cap by number of days
+##### Prices
+![GECKOCHARTPRICES](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochart_price.png)
+
+##### EXAMPLE    =SPARKLINE(GECKOCHART("btc","usd","price",365))
+
+##### Volumes
+![GECKOCHARTVOLUME](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochart_volume.png)
+
+##### EXAMPLE    =SPARKLINE(GECKOCHART("btc","usd","volume",365))
+
+##### Market Cap
+![GECKOCHARTMKT](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochart_mktcap.png)
+
+##### EXAMPLE    =SPARKLINE(GECKOCHART("btc","usd","marketcap",365))
 
 
 ### GECKOCAPTOT 
