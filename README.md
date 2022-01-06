@@ -135,17 +135,17 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 
 ### GECKOCHART
 ##### Imports the chart sparkline for historical prices, volumes, market cap by number of days
-##### Prices
+#### Prices
 ![GECKOCHARTPRICES](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochart_price.png)
 
 ##### EXAMPLE    =SPARKLINE(GECKOCHART("btc","usd","price",365))
 
-##### Volumes
+#### Volumes
 ![GECKOCHARTVOLUME](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochart_volume.png)
 
 ##### EXAMPLE    =SPARKLINE(GECKOCHART("btc","usd","volume",365))
 
-##### Market Cap
+#### Market Cap
 ![GECKOCHARTMKT](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckochart_mktcap.png)
 
 ##### EXAMPLE    =SPARKLINE(GECKOCHART("btc","usd","marketcap",365))
