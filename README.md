@@ -15,7 +15,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 |  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
 |  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	|  [GECKORANK](#geckorank) 	
 |  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckochart) 	|  [GECKOHISTBYDAY](#geckohistbyday) 	|  [GECKO24HIGH GECKO24LOW](#gecko24high-gecko24low)
-|  [GECKO_ID_DATA](#geckocaptot) 	|  [GECKOLOGO](#geckocapdominance) 	|  [COINGECKO_ID](#geckosupply) 	
+|  [GECKO_ID_DATA](#geckocaptot) 	|  [GECKOLOGO](#geckologo) 	|  [COINGECKO_ID](#geckosupply) 	
 
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
@@ -190,6 +190,12 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckorank_array.gif)
 
 ##### EXAMPLE    =GECKORANK("BTC")
+
+### GECKOLOGO
+##### Imports the logo of a cryptocurrency
+![GECKOLOGO](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckologo.png)
+
+##### EXAMPLE    =IMAGE(GECKOLOGO("BTC"))
 
 ### FORMULA REFRESHING & MAKING SURE NOT TO TRIGGER GOOGLE LIMITS
 ![TickerBox](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/TickerBoxRefresh.gif)
