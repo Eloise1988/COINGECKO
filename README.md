@@ -15,7 +15,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 |  [GECKOATH GECKOATL](#geckoath-geckoatl) 	|  [GECKOCHANGE](#geckochange) 	|  [GECKO24HPRICECHANGE](#gecko24hpricechange) 	|  [GECKOHIST](#geckohist)
 |  [GECKOCAPTOT](#geckocaptot) 	|  [GECKOCAPDOMINANCE](#geckocapdominance) 	|  [GECKOSUPPLY](#geckosupply) 	|  [GECKORANK](#geckorank) 	
 |  [GECKOCAPDILUTED](#geckocapdiluted) 	|  [GECKOCHART](#geckochart) 	|  [GECKOHISTBYDAY](#geckohistbyday) 	|  [GECKO24HIGH GECKO24LOW](#gecko24high-gecko24low)
-|  [GECKO_ID_DATA](#geckocaptot) 	|  [GECKOLOGO](#geckologo) 	|  [COINGECKO_ID](#coingecko-id) 	
+|  [GECKO_ID_DATA](#gecko-id-data) 	|  [GECKOLOGO](#geckologo) 	|  [COINGECKO_ID](#coingecko-id) 	
 
 ## GECKOPRICE
 ### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. 
@@ -190,6 +190,12 @@ Depending on the timezone of your sheet either datevalue('mm-dd-yyyy') or dateva
 ![GECKOCAPDOMINANCE](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/geckorank_array.gif)
 
 ##### EXAMPLE    =GECKORANK("BTC")
+
+### GECKO ID DATA
+##### If you are looking to retrieve the SPECIFIC data endpoints, for example scores, community data, ... 
+![GECKOIDDATA](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/gecko_id_data.png)
+
+##### EXAMPLE    =GECKO_ID_DATA(“LTC”,”market_data/price_change_percentage_7d_in_currency/usd”) 
 
 ### GECKOLOGO
 ##### Imports the logo of a cryptocurrency
