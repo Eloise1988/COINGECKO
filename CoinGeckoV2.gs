@@ -5,7 +5,7 @@
 /*====================================================================================================================================*
   CoinGecko Google Sheet Feed by Eloise1988
   ====================================================================================================================================
-  Version:      2.1.2
+  Version:      2.1.3
   Project Page: https://github.com/Eloise1988/COINGECKO
   Copyright:    (c) 2021 by Eloise1988
                 
@@ -55,6 +55,7 @@
   2.1.0  GECKOSUPPLY  imports a list of tokens' circulating, max & total supply
   2.1.1  GECKOHISTBYDAY rewrote the code for more efficiency
   2.1.2  JAN 25TH COINGECKO ID List updated
+  2.1.3  FEB 18TH COINGECKO Improved GECKOCHART so that it includes directly coingecko's id
   *====================================================================================================================================*/
 
 //CACHING TIME  
@@ -1390,7 +1391,7 @@ async function GECKOCHANGE(ticker, ticker2, type, nb_days) {
  **/
 async function GECKOCHART(ticker, ticker2, type, nb_days, str_freq = "daily") {
     Utilities.sleep(Math.random() * 100)
-    ticker = ticker.toUpperCase()
+    ticker = ticker.toLowerCase()
     ticker2 = ticker2.toLowerCase()
     type = type.toLowerCase()
     nb_days = nb_days.toString()
@@ -1407,21 +1408,16 @@ async function GECKOCHART(ticker, ticker2, type, nb_days, str_freq = "daily") {
     var cache = CacheService.getScriptCache();
     var cached = cache.get(id_cache);
     if (cached != null) {
-        return Number(cached);
+        result = cached.split(',');
+        return result.map(function(n) {
+            return n && ("" || Number(n))
+        });
     }
     try {
-        url = "https://" + pro_path + ".coingecko.com/api/v3/search?locale=fr&img_path_only=1" + pro_path_key;
-
-        var res = await UrlFetchApp.fetch(url);
-        var content = res.getContentText();
-        var parsedJSON = JSON.parse(content);
-
-        for (var i = 0; i < parsedJSON.coins.length; i++) {
-            if (parsedJSON.coins[i].symbol == ticker) {
-                id_coin = parsedJSON.coins[i].id.toString();
-                break;
-            }
-        }
+        try{id_coin=CoinList[ticker];}
+        catch(err){id_coin=ticker;}
+        Logger.log(id_coin)
+        
 
         url = "https://" + pro_path + ".coingecko.com/api/v3/coins/" + id_coin + "/market_chart?vs_currency=" + ticker2 + "&days=" + nb_days + "&interval=" + str_freq + pro_path_key;
 
@@ -1449,7 +1445,7 @@ async function GECKOCHART(ticker, ticker2, type, nb_days, str_freq = "daily") {
             cache.put(id_cache, vol_gecko, expirationInSeconds);
         return (vol_gecko);
     } catch (err) {
-        return GECKOCHART(ticker, ticker2, type, nb_days);
+        return GECKOCHART(ticker, ticker2, type, nb_days, str_freq);
     }
 
 }
