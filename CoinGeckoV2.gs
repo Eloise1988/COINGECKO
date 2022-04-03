@@ -1555,15 +1555,18 @@ async function GECKOPRICEBYNAME(ticker_array, defaultVersusCoin) {
    
     Utilities.sleep(Math.random() * 100)
     try {
-        
         pairList = [];
         if (typeof defaultVersusCoin === 'undefined') defaultVersusCoin = "usd";
         defaultVersusCoin = defaultVersusCoin.toLowerCase();
         coinList = ticker_array.toString().toLowerCase();
         
-        for (var i = 0; i < ticker_array.length; i++) {
-            pairList.push([ticker_array[i][0],defaultVersusCoin]);
-                } 
+        if (ticker_array.constructor == Array) {
+          for (var i = 0; i < ticker_array.length; i++) {
+              pairList.push([ticker_array[i][0],defaultVersusCoin]);
+                  } 
+        } else{
+              pairList.push([ticker_array,defaultVersusCoin]);
+        }
         
         id_cache = Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, coinList + defaultVersusCoin + 'price'));
         
@@ -1583,7 +1586,6 @@ async function GECKOPRICEBYNAME(ticker_array, defaultVersusCoin) {
         }
         
         let tickerList = JSON.parse(UrlFetchApp.fetch("https://" + pro_path + ".coingecko.com/api/v3/simple/price?ids=" + coinList + "&vs_currencies=" + defaultVersusCoin + pro_path_key).getContentText());
-        
         
         var dict = [];
         for (var i = 0; i < pairList.length; i++) {
