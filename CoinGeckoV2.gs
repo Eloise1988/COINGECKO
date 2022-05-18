@@ -30,6 +30,7 @@
      GECKOCHART            For use by end users to get cryptocurrency price history for plotting
      GECKOHIST             For use by end users to get cryptocurrency historical prices, volumes, mkt
      GECKOHISTBYDAY        For use by end users to get cryptocurrency historical prices, volumes, mkt by day
+     GECKOHISTBYDAY_ID     For use by end users to get cryptocurrency historical prices, volumes, mkt by day by Coingecko API_ID
      GECKOATH              For use by end users to get cryptocurrency All Time High Prices
      GECKOATL              For use by end users to get cryptocurrency All Time Low Prices
      GECKO24HIGH           For use by end users to get cryptocurrency 24H Low Price
@@ -63,7 +64,7 @@
 
 //CACHING TIME  
 //Expiration time for caching values, by default caching data last 10min=600sec. This value is a const and can be changed to your needs.
-const expirationInSeconds = 600;
+const expirationInSeconds = 6;
 
 //COINGECKO PRIVATE KEY 
 //For unlimited calls to Coingecko's API, please provide your private Key in the brackets
@@ -1144,7 +1145,7 @@ function GECKOHISTBYDAY(ticker, ticker2, type, date_ddmmyyy) {
 }
 
 /** GECKOHISTBYDAY_ID
- * Imports CoinGecko's cryptocurrency OPEN price, volume and market cap into Google spreadsheets unsing the API ID from Coingecko. The CLOSE price corresponds to OPEN price t+1.
+ * Imports CoinGecko's cryptocurrency OPEN price, volume and market cap into Google spreadsheets using the API ID from Coingecko. The CLOSE price corresponds to OPEN price t+1.
  * For example:
  *
  *   =GECKOHISTBYDAY_ID("BITCOIN","LTC","price", "31-12-2020")
