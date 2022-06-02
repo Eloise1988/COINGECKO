@@ -958,6 +958,11 @@ async function GECKO24LOW(ticker_array, currency) {
  *   =GECKOHIST("ethereum","usd","price",datevalue("12-31-2020"),datevalue("08-31-2021"))
  *   =GECKOHIST("btc","usd","volume",datevalue(a1),datevalue(a2))
  *   =GECKOHIST("btc","eth","marketcap",datevalue(a1),datevalue(a2))
+ *
+ * Data granularity is automatic (cannot be adjusted)
+ * 1 day from current time = 5 minute interval data
+ * 1 - 90 days from current time = hourly data
+ * above 90 days from current time = daily data (00:00 UTC)
  *               
  * @param {ticker}                 the cryptocurrency ticker, only 1 parameter 
  * @param {defaultVersusCoin}      usd, btc, eth etc..
