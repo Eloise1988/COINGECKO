@@ -20,9 +20,9 @@
      GECKOVOLUME           For use by end users to get cryptocurrency 24h volumes
      GECKOCAP              For use by end users to get cryptocurrency total market caps
      GECKOCAPDILUTED       For use by end users to get cryptocurrency total diluted market caps
-     GECKOPRICEBYNAME      For use by end users to get cryptocurrency prices by id, one input only
-     GECKOVOLUMEBYNAME     For use by end users to get cryptocurrency 24h volumes by id, one input only
-     GECKOCAPBYNAME        For use by end users to get cryptocurrency total market caps by id, one input only
+     GECKOPRICEBYNAME      For use by end users to get cryptocurrency prices by id
+     GECKOVOLUMEBYNAME     For use by end users to get cryptocurrency 24h volumes by id
+     GECKOCAPBYNAME        For use by end users to get cryptocurrency total market caps by id
      GECKOCAPTOT           For use by end users to get the total market cap of all cryptocurrencies in usd, eur etc....
      GECKOCAPDOMINANCE     For use by end users to get the % market cap dominance of  cryptocurrencies
      GECKOCHANGE           For use by end users to get cryptocurrency % change price, volume, mkt
