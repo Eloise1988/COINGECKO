@@ -8,7 +8,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 ###### [Link to Coingecko's Youtube video](https://www.youtube.com/watch?v=pgTbiwTna9s) 
 ###### [Link to Coingecko's API](https://www.coingecko.com/api/documentations/v3#) 
 ###### [Link to the Medium Publication](https://medium.com/the-cryptocurious/coingecko-prices-volumes-market-caps-in-google-sheets-and-excel-a1a3ee201cb8)
-###### [Link to Google Sheet's Set-up](https://medium.com/the-cryptocurious/google-sheet-open-source-cryptotools-set-up-9420e3940a8a)
+###### [Link to Google Sheet's Set-up](https://www.youtube.com/watch?v=___BlVNV1T8)
 
 ## FUNCTIONS
 |  [GECKOPRICE](#geckoprice) 	|  [GECKOVOLUME](#geckovolume) 	|  [GECKOCAP](#geckocap) 	|  [GECKOPRICEBYNAME](#geckopricebyname)
