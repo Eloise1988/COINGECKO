@@ -89,72 +89,61 @@ const cg_pro_api_key = "";
  **/
 
 async function GECKOPRICE(ticker_array, defaultVersusCoin) {
-
-    Utilities.sleep(Math.random() * 100)
+    Utilities.sleep(Math.random() * 100);
     try {
-        pairExtractRegex = /(.*)[/](.*)/, coinSet = new Set(), versusCoinSet = new Set(), pairList = [];
-
+        pairExtractRegex = /(.*)[/](.*)/;
+        pairList = [];
+        coinSet = new Set();
+        versusCoinSet = new Set();
         defaultValueForMissingData = null;
-        if (typeof defaultVersusCoin === 'undefined') defaultVersusCoin = "usd";
-        defaultVersusCoin = defaultVersusCoin.toLowerCase();
-        if (ticker_array.map) ticker_array.map(pairExtract);
-        else pairExtract(ticker_array);
-
-
+        defaultVersusCoin = (typeof defaultVersusCoin === 'undefined') ? "usd" : defaultVersusCoin.toLowerCase();
+        if (Array.isArray(ticker_array)) {
+            ticker_array.forEach(pairExtract);
+        } else {
+            pairExtract(ticker_array);
+        }
         let coinList = [...coinSet].join("%2C");
         let versusCoinList = [...versusCoinSet].join("%2C");
         id_cache = getBase64EncodedMD5(coinList + versusCoinList + 'price');
-        var cache = CacheService.getScriptCache();
-        var cached = cache.get(id_cache);
+        let cache = CacheService.getScriptCache();
+        let cached = cache.get(id_cache);
         if (cached != null) {
-            result = cached.split(',');
-            return result.map(function(n) {
-                return n && ("" || Number(n))
-            });
+            let result = cached.split(',').map(n => n && ("" || Number(n)));
+            return result;
         }
-        pro_path = "api"
-        pro_path_key = ""
-        if (cg_pro_api_key != "") {
-            pro_path = "pro-api"
-            pro_path_key = "&x_cg_pro_api_key=" + cg_pro_api_key
+        pro_path = "api";
+        pro_path_key = "";
+        if (cg_pro_api_key) {
+            pro_path = "pro-api";
+            pro_path_key = "&x_cg_pro_api_key=" + cg_pro_api_key;
         }
-
         let tickerList = JSON.parse(UrlFetchApp.fetch("https://" + pro_path + ".coingecko.com/api/v3/simple/price?ids=" + coinList + "&vs_currencies=" + versusCoinList + pro_path_key).getContentText());
-
-        var dict = [];
-        for (var i = 0; i < pairList.length; i++) {
-            if (tickerList.hasOwnProperty(pairList[i][0])) {
-                if (tickerList[pairList[i][0]].hasOwnProperty(pairList[i][1])) {
-                    dict.push(tickerList[pairList[i][0]][pairList[i][1]]);
-                } else {
-                    dict.push("");
-                }
-            } else {
-                dict.push("");
-            }
-        };
-        cache.put(id_cache, dict, expirationInSeconds);
-
-        return dict
-
-        function pairExtract(toExtract) {
-            toExtract = toExtract.toString().toLowerCase();
-            let match, pair;
-            if (match = toExtract.match(pairExtractRegex)) {
-                pairList.push(pair = [CoinList[match[1]] || match[1], match[2]]);
-                coinSet.add(pair[0]);
-                versusCoinSet.add(pair[1]);
-            } else {
-                pairList.push(pair = [CoinList[toExtract] || toExtract, defaultVersusCoin]);
-                coinSet.add(pair[0]);
-                versusCoinSet.add(pair[1]);
-            }
+        let dict = [];
+        for (let i = 0; i < pairList.length; i++) {
+            let coin = pairList[i][0];
+            let versusCoin = pairList[i][1];
+            dict.push(tickerList[coin] && tickerList[coin][versusCoin] || "");
         }
+        cache.put(id_cache, dict, expirationInSeconds);
+        return dict;
     } catch (err) {
-        //return err
         return GECKOPRICE(ticker_array, defaultVersusCoin);
     }
+
+    function pairExtract(toExtract) {
+        toExtract = toExtract.toString().toLowerCase();
+        let match, pair;
+        if (match = toExtract.match(pairExtractRegex)) {
+            pair = [CoinList[match[1]] || match[1], match[2]];
+        } else {
+            pair = [CoinList[toExtract] || toExtract, defaultVersusCoin];
+        }
+        pairList.push(pair);
+        coinSet.add(pair[0]);
+        versusCoinSet.add(pair[1]);
+    }
 }
+
 
 /** GECKOVOLUME
  * Imports CoinGecko's cryptocurrencies 24h volumes into Google spreadsheets. The feed can be an array of tickers or a single ticker.
