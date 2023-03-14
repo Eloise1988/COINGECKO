@@ -53,7 +53,7 @@ CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
 
 ######
 ## GECKOPRICEBYNAME
-### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. The Id of cryptocurrency ticker can be found in the following coingecko web page  (https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1)
+### Imports CoinGecko's cryptocurrency prices into Google spreadsheets. The Id of cryptocurrency ticker can be found in the following coingecko web page  (https://api.coingecko.com/api/v3/coins/list)
 
 ![GECKOPRICEBYNAME](https://github.com/Eloise1988/COINGECKO/blob/master/GIF/GECKOPRICEBYNAME.gif)
 
