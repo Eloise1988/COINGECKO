@@ -44,7 +44,7 @@
      GECKOSUPPLY           For use by end users to get the coin's circulating, max & total supply
 
 
-  If ticker isn't functionning please refer to the coin's id you can find in the following JSON pas: https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1
+  If ticker isn't functionning please refer to the coin's id you can find in the following JSON pas: https://api.coingecko.com/api/v3/coins/list
 
   
   For bug reports see https://github.com/Eloise1988/COINGECKO/issues
@@ -1790,7 +1790,7 @@ async function GECKOVOLUMEBYNAME(id_coin, currency) {
 
 }
 /** COINGECKO_ID
- * Imports CoinGecko's id_coin of cryptocurrency ticker, which can be found in web address of Coingecko (https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1).
+ * Imports CoinGecko's id_coin of cryptocurrency ticker, which can be found in web address of Coingecko (https://api.coingecko.com/api/v3/coins/list).
  * For example:
  *
  *   =COINGECKO_ID("BTC")
