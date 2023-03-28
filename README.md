@@ -1,7 +1,6 @@
 # COINGECKO
 CoinGecko Spreadsheet Feed: Prices, Volumes, Market Cap
-###### Update March 2023: ISSUES WITH COINGECKO
-###### Coingecko informed me that the old link (which get ids: https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1), is now deprecated, so I changed it to the new version: https://api.coingecko.com/api/v3/coins/list.
+###### Update March 2023: ISSUES WITH COINGECKO:  Coingecko informed me that the old link (which get ids: https://api.coingecko.com/api/v3/search?locale=fr&img_path_only=1), is now deprecated, so I changed it to the new version: https://api.coingecko.com/api/v3/coins/list.
 
 ######
 ## PUBLICATION LINKS
