@@ -5,7 +5,7 @@
 /*====================================================================================================================================*
   CoinGecko Google Sheet Feed by Eloise1988
   ====================================================================================================================================
-  Version:      2.1.6
+  Version:      2.1.7
   Project Page: https://github.com/Eloise1988/COINGECKO
   Copyright:    (c) 2022 by Eloise1988
                 
@@ -60,6 +60,7 @@
   2.1.4  MAR 2nd fixed bug GECKO_ID_DATA
   2.1.5  APR 3nd fixed bug GECKOPRICEBYNAME
   2.1.6  May 1st fixed bug GECKOHISTBYDAY + New function GECKOHISTBYDAY_ID
+  2.1.7  April 24th fixed bug Fixed Old URL with new : api.coingecko.com/api/v3/coins/list
   *====================================================================================================================================*/
 
 //CACHING TIME  
