@@ -1369,7 +1369,7 @@ async function GECKOCHANGE(ticker, ticker2, type, nb_days) {
         return Number(cached);
     }
     try {
-        url = "https://" + pro_path + ".coingecko.com/api/v3/search?locale=fr&img_path_only=1" + pro_path_key;
+        url = "https://" + pro_path + ".coingecko.com/api/v3/coins/list" + pro_path_key;
 
         var res = await UrlFetchApp.fetch(url);
         var content = res.getContentText();
@@ -1521,7 +1521,7 @@ async function GECKOLOGO(ticker) {
         pro_path_key = "&x_cg_pro_api_key=" + cg_pro_api_key
     }
     try {
-        url = "https://" + pro_path + ".coingecko.com/api/v3/search?locale=fr&img_path_only=1" + pro_path_key;
+        url = "https://" + pro_path + ".coingecko.com/api/v3/coins/list" + pro_path_key;
 
         var res = await UrlFetchApp.fetch(url);
         var content = res.getContentText();
